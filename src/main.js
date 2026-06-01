@@ -84,6 +84,13 @@ const resetCamBtn = document.getElementById('reset-cam-btn');
 const toggleGridBtn = document.getElementById('toggle-grid-btn');
 const toggleMatBtn = document.getElementById('toggle-material-btn');
 
+// Serial Monitor Elements
+const serialConsoleLog = document.getElementById('serial-console-log');
+const clearMonitorBtn = document.getElementById('clear-monitor-btn');
+let monitorLines = [];
+let lastPacketCount = 0;
+let connectionCheckInterval = null;
+
 // ==========================================================================
 // APPLICATION INITIALIZATION
 // ==========================================================================
@@ -158,6 +165,17 @@ function setupEventListeners() {
   window.addEventListener('resize', () => {
     if (plotter) plotter.resize();
   });
+
+  // Clear Serial Monitor log
+  if (clearMonitorBtn) {
+    clearMonitorBtn.addEventListener('click', () => {
+      monitorLines = [];
+      if (serialConsoleLog) {
+        serialConsoleLog.textContent = 'Console cleared. Waiting for data...';
+        serialConsoleLog.classList.remove('warning-active');
+      }
+    });
+  }
 }
 
 // ==========================================================================
@@ -226,8 +244,19 @@ function normalizeFinger(raw) {
  * 11: gyroY (int)
  * 12: gyroZ (int)
  */
+function logToSerialMonitor(line) {
+  if (!serialConsoleLog) return;
+  serialConsoleLog.classList.remove('warning-active');
+  monitorLines.push(line);
+  if (monitorLines.length > 6) {
+    monitorLines.shift();
+  }
+  serialConsoleLog.textContent = monitorLines.join('\n');
+}
+
 function parseLine(line) {
   if (!line) return;
+  logToSerialMonitor(line);
 
   let thumbRaw, indexRaw, middleRaw, ringRaw, pinkyRaw;
   let roll, pitch;
@@ -384,13 +413,48 @@ async function connectSerial() {
 
     // 2. Open serial connection
     await port.open({ baudRate });
+    
+    // Assert DTR/RTS signals. This releases ESP32 dev boards from reset.
+    try {
+      await port.setSignals({ dataTerminalReady: true, requestToSend: true });
+    } catch (sigErr) {
+      console.warn("Could not assert serial control signals (DTR/RTS):", sigErr);
+    }
+    
     isConnected = true;
     keepReading = true;
 
     // 3. Update connection UI status
     setUIConnected(true);
+    
+    if (serialConsoleLog) {
+      serialConsoleLog.textContent = "Port opened. Waiting for data stream...";
+      serialConsoleLog.classList.remove('warning-active');
+    }
 
-    // 4. Start asynchronous stream loop
+    // 4. Start connection packet checker (diagnose zero-data rate)
+    if (connectionCheckInterval) clearInterval(connectionCheckInterval);
+    lastPacketCount = 0;
+    let checksWithNoData = 0;
+    
+    connectionCheckInterval = setInterval(() => {
+      if (isConnected && !isSimulating) {
+        if (packetCount === lastPacketCount) {
+          checksWithNoData++;
+          if (checksWithNoData >= 3) { // 3 seconds of no data
+            if (serialConsoleLog) {
+              serialConsoleLog.textContent = `⚠️ Connected but receiving no data.\n\nTroubleshooting:\n1. If Bluetooth, ensure you selected the OUTGOING COM port, not the Incoming port.\n2. Verify the ESP32 is powered ON.\n3. Make sure the baud rate is set to 115200.`;
+              serialConsoleLog.classList.add('warning-active');
+            }
+          }
+        } else {
+          checksWithNoData = 0;
+          lastPacketCount = packetCount;
+        }
+      }
+    }, 1000);
+
+    // 5. Start asynchronous stream loop
     readSerialLoop();
   } catch (err) {
     console.error('Serial connection failed:', err);
@@ -401,6 +465,11 @@ async function connectSerial() {
 
 async function disconnectSerial() {
   keepReading = false;
+  
+  if (connectionCheckInterval) {
+    clearInterval(connectionCheckInterval);
+    connectionCheckInterval = null;
+  }
   
   if (reader) {
     try {
