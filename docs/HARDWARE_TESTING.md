@@ -10,10 +10,10 @@ Connect the components to your ESP32 DevKit V1 as follows:
 | Finger | ESP32 GPIO |
 |--------|------------|
 | Thumb  | GPIO32     |
-| Index  | GPIO33     |
-| Middle | GPIO34     |
-| Ring   | GPIO35     |
-| Little | GPIO36     |
+| Index  | GPIO25     |
+| Middle | GPIO35     |
+| Ring   | GPIO33     |
+| Little | GPIO34     |
 
 *(Ensure sensors have common VCC and GND appropriately)*
 
@@ -66,15 +66,39 @@ Connect the components to your ESP32 DevKit V1 as follows:
    Success! Saved to c:\...\data\raw\HELLO\HELLO_0001.json
    ```
 
-## 5. Mock Mode Testing (Without Hardware)
+## 5. Bluetooth Wireless Collection (Optional)
+
+The ESP32 firmware now supports Bluetooth Classic simultaneously with USB Serial.
+
+### Pairing the ESP32
+1. Power the ESP32 (via battery or USB).
+2. Open **Bluetooth & devices** settings on your Windows PC.
+3. Click **Add device** -> **Bluetooth**.
+4. Look for **SilentBridge** and pair with it.
+
+### Finding the Bluetooth COM Port
+1. Windows automatically creates two "Standard Serial over Bluetooth link" COM ports for paired devices (one incoming, one outgoing).
+2. You do not need to figure out which one is correct; the `collector.py` script will list them.
+
+### Running Collector over Bluetooth
+1. Run `python collector.py`.
+2. If multiple COM ports (USB + Bluetooth) are detected, the script will ask you to select one manually.
+3. Type the number corresponding to the Bluetooth COM port (try them if unsure).
+4. The recording workflow remains **exactly the same**.
+
+### Switching Back to USB
+- Simply plug the USB cable back in.
+- The `collector.py` script prioritizes USB ports during auto-detection if no Bluetooth ports are active, or you can manually select the USB-UART COM port.
+
+## 6. Mock Mode Testing (Without Hardware)
 
 If you want to test the script without an ESP32 connected:
 1. Open `dataset_tools/config.py`.
 2. Change `MOCK_MODE = False` to `MOCK_MODE = True`.
 3. Run `python collector.py`. The script will generate fake sensor data at 50Hz, allowing you to test the file saving and folder creation logic.
 
-## 6. Troubleshooting
+## 7. Troubleshooting
 
-- **"Failed to initialize Serial Reader"**: The ESP32 is not connected, or the COM port is currently in use by the Arduino IDE Serial Monitor. Close the Serial Monitor.
+- **"Failed to initialize Serial Reader"**: The ESP32 is not connected, or the COM port is currently in use by the Arduino IDE Serial Monitor. Close the Serial Monitor. For Bluetooth, ensure the device is powered and paired.
 - **"Error saving recording: Invalid recording frames. Missing required features."**: The ESP32 firmware was modified and is not outputting the exact 13 features expected by the `dataset_manager.py` schema.
 - **"No frames were captured"**: You pressed start and stop too quickly, or the ESP32 is connected but not transmitting (check wiring).
