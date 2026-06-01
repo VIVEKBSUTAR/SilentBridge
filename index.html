@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A web-based real-time 3D teleoperation and diagnostics interface for the ESP32 Sign Language Glove, featuring live Web Serial data streaming, calibration controls, and real-time canvas plotting." />
+    <title>Sign Language Glove - Real-time 3D Teleoperation & Diagnostics Dashboard</title>
+    <!-- Google Fonts: Inter and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Main Header -->
+      <header class="app-header">
+        <div class="logo-container">
+          <div class="logo-glow"></div>
+          <span class="logo-icon">🫵</span>
+          <h1 class="logo-text">SignGlove <span class="accent-text">3D</span></h1>
+        </div>
+        
+        <div class="header-controls">
+          <!-- Connection Status Badge -->
+          <div id="connection-status" class="status-badge disconnected">
+            <span class="status-dot"></span>
+            <span class="status-text">Disconnected</span>
+          </div>
+
+          <!-- Connection Panel -->
+          <div class="serial-controls">
+            <div class="select-wrapper">
+              <select id="baudrate-select" aria-label="Baud Rate Selection">
+                <option value="9600">9600 bps</option>
+                <option value="38400">38400 bps</option>
+                <option value="57600">57600 bps</option>
+                <option value="115200" selected>115200 bps</option>
+              </select>
+            </div>
+            
+            <button id="connect-btn" class="btn btn-primary">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-label">Connect Glove</span>
+            </button>
+            
+            <button id="mock-btn" class="btn btn-secondary">
+              <span class="btn-icon">🎮</span>
+              <span class="btn-label">Simulate Glove</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Layout -->
+      <main class="dashboard-layout">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar-panel">
+          <!-- Section 1: Calibration -->
+          <section class="control-card" aria-labelledby="heading-calibration">
+            <h2 id="heading-calibration" class="card-title">Calibration Wizard</h2>
+            <p class="card-description">
+              Calibrate the glove sensors to match your hand range. Adjust values to scale bending accurately.
+            </p>
+            
+            <div class="calibration-actions">
+              <button id="cal-open-btn" class="btn btn-action" disabled>
+                <span>🖐️</span> Calibrate Straight
+              </button>
+              <button id="cal-close-btn" class="btn btn-action" disabled>
+                <span>✊</span> Calibrate Fist
+              </button>
+            </div>
+
+            <!-- Finger Progress Bars -->
+            <div class="finger-status-container">
+              <!-- Thumb -->
+              <div class="finger-row">
+                <div class="finger-label">
+                  <span>Thumb</span>
+                  <span id="raw-thumb" class="raw-value">0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                  <div id="progress-thumb" class="progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+              
+              <!-- Index -->
+              <div class="finger-row">
+                <div class="finger-label">
+                  <span>Index</span>
+                  <span id="raw-index" class="raw-value">0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                  <div id="progress-index" class="progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Middle -->
+              <div class="finger-row">
+                <div class="finger-label">
+                  <span>Middle</span>
+                  <span id="raw-middle" class="raw-value">0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                  <div id="progress-middle" class="progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Ring -->
+              <div class="finger-row">
+                <div class="finger-label">
+                  <span>Ring</span>
+                  <span id="raw-ring" class="raw-value">0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                  <div id="progress-ring" class="progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Pinky -->
+              <div class="finger-row">
+                <div class="finger-label">
+                  <span>Pinky</span>
+                  <span id="raw-pinky" class="raw-value">0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                  <div id="progress-pinky" class="progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="calibration-settings">
+              <button id="reset-cal-btn" class="btn btn-text">Reset to Default Calibration</button>
+            </div>
+          </section>
+
+          <!-- Section 2: MPU6050 Diagnostics -->
+          <section class="control-card" aria-labelledby="heading-imu">
+            <h2 id="heading-imu" class="card-title">IMU Orientation</h2>
+            <div class="imu-grid">
+              <div class="imu-metric">
+                <span class="imu-label">Roll</span>
+                <span id="val-roll" class="imu-value">0.00°</span>
+              </div>
+              <div class="imu-metric">
+                <span class="imu-label">Pitch</span>
+                <span id="val-pitch" class="imu-value">0.00°</span>
+              </div>
+            </div>
+
+            <!-- Accelerometer & Gyroscope Details -->
+            <details class="imu-details">
+              <summary>Raw IMU Vector Data</summary>
+              <div class="vector-group">
+                <h3>Accelerometer (G's approx)</h3>
+                <div class="vector-row">
+                  <div>X: <span id="val-acc-x">0</span></div>
+                  <div>Y: <span id="val-acc-y">0</span></div>
+                  <div>Z: <span id="val-acc-z">0</span></div>
+                </div>
+              </div>
+              <div class="vector-group">
+                <h3>Gyroscope (°/s approx)</h3>
+                <div class="vector-row">
+                  <div>X: <span id="val-gyro-x">0</span></div>
+                  <div>Y: <span id="val-gyro-y">0</span></div>
+                  <div>Z: <span id="val-gyro-z">0</span></div>
+                </div>
+              </div>
+            </details>
+          </section>
+
+          <!-- Section 3: Connection Info -->
+          <section class="control-card connection-card" aria-labelledby="heading-stats">
+            <h2 id="heading-stats" class="card-title">Telemetry Info</h2>
+            <div class="telemetry-stats">
+              <div class="stat-row">
+                <span>FPS:</span>
+                <span id="stat-fps">0</span>
+              </div>
+              <div class="stat-row">
+                <span>Data Rate:</span>
+                <span id="stat-hz">0.0 Hz</span>
+              </div>
+              <div class="stat-row">
+                <span>Packets Received:</span>
+                <span id="stat-packets">0</span>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main Content (3D Hand + Graph) -->
+        <div class="visualizer-container">
+          <!-- 3D Canvas Viewport -->
+          <div class="viewport-card viewport-3d">
+            <div id="canvas-container">
+              <!-- Three.js Canvas gets injected here -->
+            </div>
+            
+            <!-- Floating Controls in Viewport -->
+            <div class="viewport-overlay-controls">
+              <button id="reset-cam-btn" class="btn-overlay" title="Reset Camera Angle">
+                <span>🎥</span> Reset Cam
+              </button>
+              <button id="toggle-grid-btn" class="btn-overlay active" title="Toggle Grid Floor">
+                <span>🌐</span> Grid ON
+              </button>
+              <button id="toggle-material-btn" class="btn-overlay" title="Toggle Hand Style">
+                <span>✨</span> Style: Glass
+              </button>
+            </div>
+
+            <!-- Glove Helper Legend -->
+            <div class="viewport-legend">
+              <span class="legend-item"><span class="legend-dot thumb"></span> Thumb</span>
+              <span class="legend-item"><span class="legend-dot index"></span> Index</span>
+              <span class="legend-item"><span class="legend-dot middle"></span> Middle</span>
+              <span class="legend-item"><span class="legend-dot ring"></span> Ring</span>
+              <span class="legend-item"><span class="legend-dot pinky"></span> Pinky</span>
+            </div>
+          </div>
+
+          <!-- Live Signal Plotter Viewport -->
+          <div class="viewport-card graph-viewport">
+            <div class="graph-header">
+              <h2 class="graph-title">Live Sensor Feeds</h2>
+              <div class="graph-legends">
+                <span class="legend-line thumb">Thumb</span>
+                <span class="legend-line index">Index</span>
+                <span class="legend-line middle">Middle</span>
+                <span class="legend-line ring">Ring</span>
+                <span class="legend-line pinky">Pinky</span>
+                <span class="legend-line roll">Roll</span>
+                <span class="legend-line pitch">Pitch</span>
+              </div>
+            </div>
+            <div class="graph-canvas-container">
+              <canvas id="plotter-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="app-footer">
+        <p>SignLanguageGlove 3D Visualizer | Powered by Web Serial API & Three.js</p>
+      </footer>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
