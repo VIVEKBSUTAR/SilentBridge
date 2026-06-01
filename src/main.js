@@ -228,27 +228,62 @@ function normalizeFinger(raw) {
  */
 function parseLine(line) {
   if (!line) return;
-  
-  const tokens = line.split(',');
-  if (tokens.length < 13) return; // Discard corrupted packages
 
-  // 1. Extract values
-  const thumbRaw  = parseInt(tokens[0]);
-  const indexRaw  = parseInt(tokens[1]);
-  const middleRaw = parseInt(tokens[2]);
-  const ringRaw   = parseInt(tokens[3]);
-  const pinkyRaw  = parseInt(tokens[4]);
+  let thumbRaw, indexRaw, middleRaw, ringRaw, pinkyRaw;
+  let roll, pitch;
+  let ax, ay, az;
+  let gx, gy, gz;
 
-  const roll  = parseFloat(tokens[5]);
-  const pitch = parseFloat(tokens[6]);
+  const trimmed = line.trim();
 
-  const ax = parseInt(tokens[7]);
-  const ay = parseInt(tokens[8]);
-  const az = parseInt(tokens[9]);
+  // Check if it is a JSON packet
+  if (trimmed.startsWith('{')) {
+    try {
+      const data = JSON.parse(trimmed);
+      thumbRaw = parseInt(data.thumb);
+      indexRaw = parseInt(data.index);
+      middleRaw = parseInt(data.middle);
+      ringRaw = parseInt(data.ring);
+      // Support both "little" (from the JSON firmware) and "pinky"
+      pinkyRaw = parseInt(data.pinky !== undefined ? data.pinky : data.little);
 
-  const gx = parseInt(tokens[10]);
-  const gy = parseInt(tokens[11]);
-  const gz = parseInt(tokens[12]);
+      roll = parseFloat(data.roll);
+      pitch = parseFloat(data.pitch);
+
+      // Support shorthand and full names
+      ax = parseInt(data.ax !== undefined ? data.ax : data.accX);
+      ay = parseInt(data.ay !== undefined ? data.ay : data.accY);
+      az = parseInt(data.az !== undefined ? data.az : data.accZ);
+
+      gx = parseInt(data.gx !== undefined ? data.gx : data.gyroX);
+      gy = parseInt(data.gy !== undefined ? data.gy : data.gyroY);
+      gz = parseInt(data.gz !== undefined ? data.gz : data.gyroZ);
+    } catch (e) {
+      console.warn("Failed to parse JSON serial packet:", e);
+      return;
+    }
+  } else {
+    // Fall back to CSV parsing
+    const tokens = trimmed.split(',');
+    if (tokens.length < 13) return; // Discard corrupted packages
+
+    thumbRaw  = parseInt(tokens[0]);
+    indexRaw  = parseInt(tokens[1]);
+    middleRaw = parseInt(tokens[2]);
+    ringRaw   = parseInt(tokens[3]);
+    pinkyRaw  = parseInt(tokens[4]);
+
+    roll  = parseFloat(tokens[5]);
+    pitch = parseFloat(tokens[6]);
+
+    ax = parseInt(tokens[7]);
+    ay = parseInt(tokens[8]);
+    az = parseInt(tokens[9]);
+
+    gx = parseInt(tokens[10]);
+    gy = parseInt(tokens[11]);
+    gz = parseInt(tokens[12]);
+  }
 
   // Validate numeric conversion
   if ([thumbRaw, indexRaw, middleRaw, ringRaw, pinkyRaw, roll, pitch, ax, ay, az, gx, gy, gz].some(isNaN)) {
