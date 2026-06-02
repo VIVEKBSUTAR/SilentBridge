@@ -894,3 +894,55 @@ body::after {
     height: 400px;
   }
 }
+
+/* ==========================================================================
+   RAW TELEMETRY FLOATING HUD OVERLAY
+   ========================================================================== */
+.raw-telemetry-overlay {
+  position: fixed;
+  bottom: 45px;
+  left: 20px;
+  background: rgba(8, 12, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: var(--border-radius-md);
+  padding: 0.6rem 0.8rem;
+  z-index: 9999;
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+  box-shadow: var(--shadow-main);
+  width: 280px;
+  transition: opacity 0.3s ease;
+}
+
+.raw-telemetry-overlay .overlay-title {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-purple);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.raw-telemetry-overlay .overlay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2rem 0.8rem;
+}
+
+.raw-telemetry-overlay .overlay-grid div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.raw-telemetry-overlay .overlay-grid span {
+  color: var(--text-primary);
+  font-weight: bold;
+}

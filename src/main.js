@@ -95,6 +95,24 @@ let monitorLines = [];
 let lastPacketCount = 0;
 let connectionCheckInterval = null;
 
+// HUD Overlay Elements
+const overlayElements = {
+  ts: document.getElementById('overlay-ts'),
+  th: document.getElementById('overlay-th'),
+  ix: document.getElementById('overlay-ix'),
+  md: document.getElementById('overlay-md'),
+  rg: document.getElementById('overlay-rg'),
+  lt: document.getElementById('overlay-lt'),
+  ax: document.getElementById('overlay-ax'),
+  ay: document.getElementById('overlay-ay'),
+  az: document.getElementById('overlay-az'),
+  gx: document.getElementById('overlay-gx'),
+  gy: document.getElementById('overlay-gy'),
+  gz: document.getElementById('overlay-gz'),
+  pt: document.getElementById('overlay-pt'),
+  rl: document.getElementById('overlay-rl')
+};
+
 // ==========================================================================
 // APPLICATION INITIALIZATION
 // ==========================================================================
@@ -394,6 +412,22 @@ function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, g
   if (valTimestamp && timestamp !== undefined) {
     valTimestamp.textContent = timestamp;
   }
+
+  // Update HUD Overlay Elements
+  if (overlayElements.ts && timestamp !== undefined) overlayElements.ts.textContent = timestamp;
+  if (overlayElements.th) overlayElements.th.textContent = rawFingers[0];
+  if (overlayElements.ix) overlayElements.ix.textContent = rawFingers[1];
+  if (overlayElements.md) overlayElements.md.textContent = rawFingers[2];
+  if (overlayElements.rg) overlayElements.rg.textContent = rawFingers[3];
+  if (overlayElements.lt) overlayElements.lt.textContent = rawFingers[4];
+  if (overlayElements.ax) overlayElements.ax.textContent = ax.toFixed(3);
+  if (overlayElements.ay) overlayElements.ay.textContent = ay.toFixed(3);
+  if (overlayElements.az) overlayElements.az.textContent = az.toFixed(3);
+  if (overlayElements.gx) overlayElements.gx.textContent = gx.toFixed(1);
+  if (overlayElements.gy) overlayElements.gy.textContent = gy.toFixed(1);
+  if (overlayElements.gz) overlayElements.gz.textContent = gz.toFixed(1);
+  if (overlayElements.pt) overlayElements.pt.textContent = pitch.toFixed(1);
+  if (overlayElements.rl) overlayElements.rl.textContent = roll.toFixed(1);
 
   statPackets.textContent = packetCount;
 }
