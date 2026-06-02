@@ -577,12 +577,58 @@ body::after {
   position: relative;
 }
 
+/* Top Viewports Row Split */
+.viewports-row {
+  display: grid;
+  grid-template-columns: 2fr 1.1fr;
+  gap: 1.25rem;
+  flex: 3;
+}
+
 /* 3D Hand Viewport */
 .viewport-3d {
-  flex: 3;
   display: flex;
   flex-direction: column;
   position: relative;
+  height: 100%;
+}
+
+/* 3D Acceleration Viewport */
+.viewport-accel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+#accel-canvas-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#accel-canvas-container:active {
+  cursor: grabbing;
+}
+
+.accel-overlay-title {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(13, 20, 35, 0.75);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: var(--shadow-main);
 }
 
 #canvas-container {
@@ -838,6 +884,13 @@ body::after {
     width: 100%;
   }
   .visualizer-container {
-    height: 600px;
+    height: auto;
+  }
+  .viewports-row {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .viewport-3d, .viewport-accel {
+    height: 400px;
   }
 }

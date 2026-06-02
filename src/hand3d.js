@@ -11,7 +11,9 @@ let scene, camera, renderer, controls;
 let wristGroup; // Root pivot of the entire hand
 let handRestGroup; // Default rest orientation (palm down, pointing away)
 let gridHelper;
-let accArrow; // Arrow helper for acceleration vector
+
+// 3D Acceleration Viewport Scene Variables
+let sceneAccel, cameraAccel, rendererAccel, controlsAccel, arrowHelperAccel;
 
 // Finger references for joint rotation
 const fingers = {
@@ -120,6 +122,74 @@ export function initHand(containerId) {
 }
 
 /**
+ * Initializes the 3D Acceleration scene inside the specified DOM container.
+ * @param {string} containerId - The ID of the container element
+ */
+export function initAccel(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // 1. Scene Setup
+  sceneAccel = new THREE.Scene();
+  sceneAccel.background = null; // Transparent background to match CSS container
+
+  // 2. Camera Setup
+  cameraAccel = new THREE.PerspectiveCamera(
+    45, 
+    container.clientWidth / container.clientHeight, 
+    0.1, 
+    100
+  );
+  cameraAccel.position.set(0, 2.5, 4);
+
+  // 3. Renderer Setup
+  rendererAccel = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  rendererAccel.setSize(container.clientWidth, container.clientHeight);
+  rendererAccel.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(rendererAccel.domElement);
+
+  // 4. Controls
+  controlsAccel = new OrbitControls(cameraAccel, rendererAccel.domElement);
+  controlsAccel.enableDamping = true;
+  controlsAccel.dampingFactor = 0.05;
+  controlsAccel.minDistance = 1.5;
+  controlsAccel.maxDistance = 10;
+
+  // 5. Lighting Setup
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  sceneAccel.add(ambientLight);
+
+  const mainLight = new THREE.DirectionalLight(0xffffff, 1.0);
+  mainLight.position.set(5, 5, 5);
+  sceneAccel.add(mainLight);
+
+  // 6. Grid Helper (Floor) & Axes Helper
+  const gridHelperAccel = new THREE.GridHelper(6, 6, 0xa855f7, 0x1e293b);
+  gridHelperAccel.position.y = -1.5;
+  sceneAccel.add(gridHelperAccel);
+
+  const axesHelperAccel = new THREE.AxesHelper(1.2);
+  sceneAccel.add(axesHelperAccel);
+
+  // 7. Wireframe sphere boundary
+  const sphereGeo = new THREE.SphereGeometry(1.5, 32, 32);
+  const sphereMat = new THREE.MeshBasicMaterial({
+    color: 0x06b6d4,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.15
+  });
+  const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
+  sceneAccel.add(sphereMesh);
+
+  // 8. Arrow Helper for Acceleration Direction
+  const dir = new THREE.Vector3(0, -1, 0);
+  const origin = new THREE.Vector3(0, 0, 0);
+  arrowHelperAccel = new THREE.ArrowHelper(dir, origin, 1.5, 0x10b981, 0.25, 0.1);
+  sceneAccel.add(arrowHelperAccel);
+}
+
+/**
  * Instantiates the materials used for both glassmorphism and robotic look.
  */
 function initMaterials() {
@@ -220,13 +290,6 @@ function buildHand() {
   createFinger('middle', new THREE.Vector3(-0.25, 1.5,  0.0),  1.55, 0.12, fingerColors.middle);
   createFinger('ring',   new THREE.Vector3( 0.3,  1.4,  0.0),  1.45, 0.12, fingerColors.ring);
   createFinger('pinky',  new THREE.Vector3( 0.85, 1.2,  0.0),  1.15, 0.10, fingerColors.pinky);
-
-  // Acceleration Vector Arrow (points in net direction of acceleration, colored neon green)
-  const arrowDir = new THREE.Vector3(0, 0, -1); // Points away from camera initially
-  const arrowOrigin = new THREE.Vector3(0, 0.5, 0); // Origin at the center of the palm
-  const arrowColor = 0x10b981; // Neon green (var(--accent-green))
-  accArrow = new THREE.ArrowHelper(arrowDir, arrowOrigin, 1.5, arrowColor, 0.3, 0.15);
-  handRestGroup.add(accArrow);
 }
 
 /**
@@ -364,10 +427,16 @@ function animate() {
     wristGroup.rotation.x = currentPitch * DEG;
   }
 
-  // 2. Render and controls update
+  // 2. Render and controls update for Hand Viewport
   if (controls) controls.update();
   if (renderer && scene && camera) {
     renderer.render(scene, camera);
+  }
+
+  // 3. Render and controls update for Acceleration Viewport
+  if (controlsAccel) controlsAccel.update();
+  if (rendererAccel && sceneAccel && cameraAccel) {
+    rendererAccel.render(sceneAccel, cameraAccel);
   }
 }
 
@@ -375,13 +444,23 @@ function animate() {
  * Handle resizing of the viewport canvas.
  */
 function onWindowResize() {
-  const container = renderer.domElement.parentElement;
-  if (!container) return;
+  if (renderer && camera) {
+    const container = renderer.domElement.parentElement;
+    if (container) {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+  }
 
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(container.clientWidth, container.clientHeight);
+  if (rendererAccel && cameraAccel) {
+    const containerAccel = rendererAccel.domElement.parentElement;
+    if (containerAccel) {
+      cameraAccel.aspect = containerAccel.clientWidth / containerAccel.clientHeight;
+      cameraAccel.updateProjectionMatrix();
+      rendererAccel.setSize(containerAccel.clientWidth, containerAccel.clientHeight);
+    }
+  }
 }
 
 // ==========================================================================
@@ -408,23 +487,25 @@ export function updateHandOrientation(roll, pitch) {
  * @param {number} az - Accel Z raw
  */
 export function updateAcceleration(ax, ay, az) {
-  if (!accArrow) return;
+  if (!arrowHelperAccel) return;
   if (isNaN(ax) || isNaN(ay) || isNaN(az)) return;
 
-  // Local mapping: X = ay (lateral), Y = ax (longitudinal), Z = az (vertical)
-  // Negating makes the vector align with physical force/gravity direction (points down at rest)
-  const dir = new THREE.Vector3(-ay, -ax, -az);
+  // Axes Mapping for Direct 3D Acceleration Viewport:
+  // X = -ay (lateral)
+  // Y = -az (vertical)
+  // Z = -ax (longitudinal)
+  const dir = new THREE.Vector3(-ay, -az, -ax);
   const magnitude = dir.length();
 
   if (magnitude > 100) { // Avoid division by zero/noise
     dir.normalize();
-    accArrow.setDirection(dir);
+    arrowHelperAccel.setDirection(dir);
     // 1g is approx 16384 LSB in raw values. Map to length of 1.5 units
     const len = Math.min(3.0, Math.max(0.2, (magnitude / 16384.0) * 1.5));
-    accArrow.setLength(len, 0.2 * len, 0.08 * len);
-    accArrow.visible = true;
+    arrowHelperAccel.setLength(len, 0.2 * len, 0.08 * len);
+    arrowHelperAccel.visible = true;
   } else {
-    accArrow.visible = false;
+    arrowHelperAccel.visible = false;
   }
 }
 

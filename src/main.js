@@ -1,5 +1,6 @@
 import { 
   initHand, 
+  initAccel,
   updateHandOrientation, 
   updateFingerBends, 
   updateAcceleration,
@@ -102,6 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. Start 3D Hand Scene
   initHand('canvas-container');
+
+  // Start Acceleration Scene
+  initAccel('accel-canvas-container');
 
   // 3. Initialize Oscilloscope Plotter
   const plotterCanvas = document.getElementById('plotter-canvas');
