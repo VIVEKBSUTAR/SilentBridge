@@ -14,6 +14,8 @@ let gridHelper;
 
 // 3D Acceleration Viewport Scene Variables
 let sceneAccel, cameraAccel, rendererAccel, controlsAccel, arrowHelperAccel;
+let gravX = 0, gravY = 0, gravZ = 0;
+let isGravInitialized = false;
 
 // Finger references for joint rotation
 const fingers = {
@@ -490,23 +492,55 @@ export function updateAcceleration(ax, ay, az) {
   if (!arrowHelperAccel) return;
   if (isNaN(ax) || isNaN(ay) || isNaN(az)) return;
 
-  // Axes Mapping for Direct 3D Acceleration Viewport:
-  // X = -ay (lateral)
-  // Y = -az (vertical)
-  // Z = -ax (longitudinal)
-  const dir = new THREE.Vector3(-ay, -az, -ax);
+  // Initialize gravity baseline on first packet
+  if (!isGravInitialized) {
+    gravX = ax;
+    gravY = ay;
+    gravZ = az;
+    isGravInitialized = true;
+  }
+
+  // Leaky integrator to estimate/track the gravity vector components (slow changes)
+  const alpha = 0.96;
+  gravX = alpha * gravX + (1 - alpha) * ax;
+  gravY = alpha * gravY + (1 - alpha) * ay;
+  gravZ = alpha * gravZ + (1 - alpha) * az;
+
+  // Subtract gravity to isolate dynamic linear acceleration (hand movement)
+  const linX = ax - gravX;
+  const linY = ay - gravY;
+  const linZ = az - gravZ;
+
+  // Map to 3D Viewport coordinate space (oriented to point in direction of hand motion):
+  // - Lateral motion (Y sensor axis) -> X viewport axis (negated to match movement direction)
+  // - Vertical motion (Z sensor axis) -> Y viewport axis (negated to match movement direction)
+  // - Longitudinal motion (X sensor axis) -> Z viewport axis (straight mapping: negative is forward)
+  const dir = new THREE.Vector3(-linY, -linZ, linX);
   const magnitude = dir.length();
 
-  if (magnitude > 100) { // Avoid division by zero/noise
+  // Noise floor threshold to prevent the arrow from jittering at rest
+  const NOISE_THRESHOLD = 250;
+
+  if (magnitude > NOISE_THRESHOLD) {
     dir.normalize();
     arrowHelperAccel.setDirection(dir);
-    // 1g is approx 16384 LSB in raw values. Map to length of 1.5 units
-    const len = Math.min(3.0, Math.max(0.2, (magnitude / 16384.0) * 1.5));
-    arrowHelperAccel.setLength(len, 0.2 * len, 0.08 * len);
+    // Scale length: 1g dynamic acceleration mapped to a clear 1.8 units length
+    const len = Math.min(2.5, Math.max(0.4, (magnitude / 4000.0) * 1.8));
+    arrowHelperAccel.setLength(len, 0.25 * len, 0.1 * len);
     arrowHelperAccel.visible = true;
   } else {
     arrowHelperAccel.visible = false;
   }
+}
+
+/**
+ * Resets the gravity tracking baseline. Call when connecting or starting simulation.
+ */
+export function resetGravityTracker() {
+  isGravInitialized = false;
+  gravX = 0;
+  gravY = 0;
+  gravZ = 0;
 }
 
 /**

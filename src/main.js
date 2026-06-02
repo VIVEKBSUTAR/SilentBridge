@@ -6,7 +6,8 @@ import {
   updateAcceleration,
   resetCamera, 
   toggleGrid, 
-  toggleStyle 
+  toggleStyle,
+  resetGravityTracker
 } from './hand3d.js';
 import { RealtimePlotter } from './plotter.js';
 
@@ -410,6 +411,8 @@ async function connectSerial() {
 
   // Disable simulation if running
   if (isSimulating) stopSimulation();
+  
+  resetGravityTracker();
 
   try {
     // 1. Request port selection from user
@@ -563,6 +566,8 @@ function startSimulation() {
 
   isSimulating = true;
   setUISimulating(true);
+  
+  resetGravityTracker();
 
   let angle = 0;
   
