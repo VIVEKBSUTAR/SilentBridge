@@ -14,7 +14,9 @@ let gridHelper;
 
 // 3D Acceleration Viewport Scene Variables
 let sceneAccel, cameraAccel, rendererAccel, controlsAccel, arrowHelperAccel;
+let arrowX, arrowY, arrowZ;
 let gravX = 0, gravY = 0, gravZ = 0;
+let smoothLinX = 0, smoothLinY = 0, smoothLinZ = 0;
 let isGravInitialized = false;
 
 // Finger references for joint rotation
@@ -165,13 +167,10 @@ export function initAccel(containerId) {
   mainLight.position.set(5, 5, 5);
   sceneAccel.add(mainLight);
 
-  // 6. Grid Helper (Floor) & Axes Helper
+  // 6. Grid Helper (Floor)
   const gridHelperAccel = new THREE.GridHelper(6, 6, 0xa855f7, 0x1e293b);
   gridHelperAccel.position.y = -1.5;
   sceneAccel.add(gridHelperAccel);
-
-  const axesHelperAccel = new THREE.AxesHelper(1.2);
-  sceneAccel.add(axesHelperAccel);
 
   // 7. Wireframe sphere boundary
   const sphereGeo = new THREE.SphereGeometry(1.5, 32, 32);
@@ -184,10 +183,23 @@ export function initAccel(containerId) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sceneAccel.add(sphereMesh);
 
-  // 8. Arrow Helper for Acceleration Direction
+  // 8. Dynamic Axis-Specific Arrow Helpers (acting as dynamic axes)
+  // arrowX: Red/Coral (X-axis)
+  arrowX = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), 0.15, 0xef4444, 0.04, 0.016);
+  sceneAccel.add(arrowX);
+
+  // arrowY: Green/Lime (Y-axis)
+  arrowY = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), 0.15, 0x10b981, 0.04, 0.016);
+  sceneAccel.add(arrowY);
+
+  // arrowZ: Blue/Cyan (Z-axis)
+  arrowZ = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), 0.15, 0x3b82f6, 0.04, 0.016);
+  sceneAccel.add(arrowZ);
+
+  // 9. Arrow Helper for Combined Net Acceleration Direction (Neon Gold)
   const dir = new THREE.Vector3(0, -1, 0);
   const origin = new THREE.Vector3(0, 0, 0);
-  arrowHelperAccel = new THREE.ArrowHelper(dir, origin, 1.5, 0x10b981, 0.25, 0.1);
+  arrowHelperAccel = new THREE.ArrowHelper(dir, origin, 0.15, 0xfacc15, 0.04, 0.016);
   sceneAccel.add(arrowHelperAccel);
 }
 
@@ -489,7 +501,7 @@ export function updateHandOrientation(roll, pitch) {
  * @param {number} az - Accel Z raw
  */
 export function updateAcceleration(ax, ay, az) {
-  if (!arrowHelperAccel) return;
+  if (!arrowHelperAccel || !arrowX || !arrowY || !arrowZ) return;
   if (isNaN(ax) || isNaN(ay) || isNaN(az)) return;
 
   // Initialize gravity baseline on first packet
@@ -511,22 +523,66 @@ export function updateAcceleration(ax, ay, az) {
   const linY = ay - gravY;
   const linZ = az - gravZ;
 
+  // Low-pass filter to smooth the resulting motion vector for visual persistence and decay
+  const smoothFactor = 0.15;
+  smoothLinX += (linX - smoothLinX) * smoothFactor;
+  smoothLinY += (linY - smoothLinY) * smoothFactor;
+  smoothLinZ += (linZ - smoothLinZ) * smoothFactor;
+
   // Map to 3D Viewport coordinate space (oriented to point in direction of hand motion):
   // - Lateral motion (Y sensor axis) -> X viewport axis (negated to match movement direction)
   // - Vertical motion (Z sensor axis) -> Y viewport axis (negated to match movement direction)
   // - Longitudinal motion (X sensor axis) -> Z viewport axis (straight mapping: negative is forward)
-  const dir = new THREE.Vector3(-linY, -linZ, linX);
-  const magnitude = dir.length();
+  const valX = -smoothLinY;
+  const valY = -smoothLinZ;
+  const valZ = smoothLinX;
 
-  // Noise floor threshold to prevent the arrow from jittering at rest
-  const NOISE_THRESHOLD = 250;
+  // 1. Update Axis-Specific Arrow Helpers (Red, Green, Blue)
+  // We use a small threshold to filter out resting sensor noise
+  const NOISE_THRESHOLD = 150;
 
-  if (magnitude > NOISE_THRESHOLD) {
-    dir.normalize();
+  // Update X Axis Arrow (Red)
+  if (Math.abs(valX) > NOISE_THRESHOLD) {
+    const lenX = Math.min(1.5, (Math.abs(valX) / 4000.0) * 1.2 + 0.15);
+    arrowX.setDirection(new THREE.Vector3(valX >= 0 ? 1 : -1, 0, 0));
+    arrowX.setLength(lenX, 0.2 * lenX, 0.08 * lenX);
+  } else {
+    // Reset to small resting size acting as coordinate helper
+    arrowX.setDirection(new THREE.Vector3(1, 0, 0));
+    arrowX.setLength(0.15, 0.03, 0.012);
+  }
+
+  // Update Y Axis Arrow (Green)
+  if (Math.abs(valY) > NOISE_THRESHOLD) {
+    const lenY = Math.min(1.5, (Math.abs(valY) / 4000.0) * 1.2 + 0.15);
+    arrowY.setDirection(new THREE.Vector3(0, valY >= 0 ? 1 : -1, 0));
+    arrowY.setLength(lenY, 0.2 * lenY, 0.08 * lenY);
+  } else {
+    // Reset to small resting size acting as coordinate helper
+    arrowY.setDirection(new THREE.Vector3(0, 1, 0));
+    arrowY.setLength(0.15, 0.03, 0.012);
+  }
+
+  // Update Z Axis Arrow (Blue)
+  if (Math.abs(valZ) > NOISE_THRESHOLD) {
+    const lenZ = Math.min(1.5, (Math.abs(valZ) / 4000.0) * 1.2 + 0.15);
+    arrowZ.setDirection(new THREE.Vector3(0, 0, valZ >= 0 ? 1 : -1));
+    arrowZ.setLength(lenZ, 0.2 * lenZ, 0.08 * lenZ);
+  } else {
+    // Reset to small resting size acting as coordinate helper
+    arrowZ.setDirection(new THREE.Vector3(0, 0, 1));
+    arrowZ.setLength(0.15, 0.03, 0.012);
+  }
+
+  // 2. Update Combined Net Acceleration Vector Arrow (Gold)
+  const netVector = new THREE.Vector3(valX, valY, valZ);
+  const netMag = netVector.length();
+
+  if (netMag > NOISE_THRESHOLD) {
+    const dir = netVector.clone().normalize();
     arrowHelperAccel.setDirection(dir);
-    // Scale length: 1g dynamic acceleration mapped to a clear 1.8 units length
-    const len = Math.min(2.5, Math.max(0.4, (magnitude / 4000.0) * 1.8));
-    arrowHelperAccel.setLength(len, 0.25 * len, 0.1 * len);
+    const lenNet = Math.min(2.5, (netMag / 4000.0) * 1.5 + 0.15);
+    arrowHelperAccel.setLength(lenNet, 0.2 * lenNet, 0.08 * lenNet);
     arrowHelperAccel.visible = true;
   } else {
     arrowHelperAccel.visible = false;
@@ -541,6 +597,9 @@ export function resetGravityTracker() {
   gravX = 0;
   gravY = 0;
   gravZ = 0;
+  smoothLinX = 0;
+  smoothLinY = 0;
+  smoothLinZ = 0;
 }
 
 /**
