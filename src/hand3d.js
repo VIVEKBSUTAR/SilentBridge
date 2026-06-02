@@ -496,9 +496,9 @@ export function updateHandOrientation(roll, pitch) {
 
 /**
  * Updates the 3D acceleration arrow helper direction and length.
- * @param {number} ax - Accel X raw
- * @param {number} ay - Accel Y raw
- * @param {number} az - Accel Z raw
+ * @param {number} ax - Accel X in g
+ * @param {number} ay - Accel Y in g
+ * @param {number} az - Accel Z in g
  */
 export function updateAcceleration(ax, ay, az) {
   if (!arrowHelperAccel || !arrowX || !arrowY || !arrowZ) return;
@@ -538,12 +538,12 @@ export function updateAcceleration(ax, ay, az) {
   const valZ = smoothLinX;
 
   // 1. Update Axis-Specific Arrow Helpers (Red, Green, Blue)
-  // We use a small threshold to filter out resting sensor noise
-  const NOISE_THRESHOLD = 150;
+  // We use a small threshold (0.05g) to filter out resting sensor noise
+  const NOISE_THRESHOLD = 0.05;
 
   // Update X Axis Arrow (Red)
   if (Math.abs(valX) > NOISE_THRESHOLD) {
-    const lenX = Math.min(1.5, (Math.abs(valX) / 4000.0) * 1.2 + 0.15);
+    const lenX = Math.min(1.5, Math.abs(valX) * 1.5 + 0.15);
     arrowX.setDirection(new THREE.Vector3(valX >= 0 ? 1 : -1, 0, 0));
     arrowX.setLength(lenX, 0.2 * lenX, 0.08 * lenX);
   } else {
@@ -554,7 +554,7 @@ export function updateAcceleration(ax, ay, az) {
 
   // Update Y Axis Arrow (Green)
   if (Math.abs(valY) > NOISE_THRESHOLD) {
-    const lenY = Math.min(1.5, (Math.abs(valY) / 4000.0) * 1.2 + 0.15);
+    const lenY = Math.min(1.5, Math.abs(valY) * 1.5 + 0.15);
     arrowY.setDirection(new THREE.Vector3(0, valY >= 0 ? 1 : -1, 0));
     arrowY.setLength(lenY, 0.2 * lenY, 0.08 * lenY);
   } else {
@@ -565,7 +565,7 @@ export function updateAcceleration(ax, ay, az) {
 
   // Update Z Axis Arrow (Blue)
   if (Math.abs(valZ) > NOISE_THRESHOLD) {
-    const lenZ = Math.min(1.5, (Math.abs(valZ) / 4000.0) * 1.2 + 0.15);
+    const lenZ = Math.min(1.5, Math.abs(valZ) * 1.5 + 0.15);
     arrowZ.setDirection(new THREE.Vector3(0, 0, valZ >= 0 ? 1 : -1));
     arrowZ.setLength(lenZ, 0.2 * lenZ, 0.08 * lenZ);
   } else {
@@ -581,7 +581,7 @@ export function updateAcceleration(ax, ay, az) {
   if (netMag > NOISE_THRESHOLD) {
     const dir = netVector.clone().normalize();
     arrowHelperAccel.setDirection(dir);
-    const lenNet = Math.min(2.5, (netMag / 4000.0) * 1.5 + 0.15);
+    const lenNet = Math.min(2.5, netMag * 1.5 + 0.15);
     arrowHelperAccel.setLength(lenNet, 0.2 * lenNet, 0.08 * lenNet);
     arrowHelperAccel.visible = true;
   } else {

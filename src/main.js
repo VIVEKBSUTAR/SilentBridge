@@ -76,6 +76,7 @@ const valAccZ = document.getElementById('val-acc-z');
 const valGyroX = document.getElementById('val-gyro-x');
 const valGyroY = document.getElementById('val-gyro-y');
 const valGyroZ = document.getElementById('val-gyro-z');
+const valTimestamp = document.getElementById('val-timestamp');
 
 // Telemetry Stats
 const statFps = document.getElementById('stat-fps');
@@ -267,6 +268,7 @@ function parseLine(line) {
   let roll, pitch;
   let ax, ay, az;
   let gx, gy, gz;
+  let timestamp;
 
   const trimmed = line.trim();
 
@@ -274,6 +276,7 @@ function parseLine(line) {
   if (trimmed.startsWith('{')) {
     try {
       const data = JSON.parse(trimmed);
+      timestamp = data.timestamp !== undefined ? parseInt(data.timestamp) : undefined;
       thumbRaw = parseInt(data.thumb);
       indexRaw = parseInt(data.index);
       middleRaw = parseInt(data.middle);
@@ -284,14 +287,14 @@ function parseLine(line) {
       roll = parseFloat(data.roll);
       pitch = parseFloat(data.pitch);
 
-      // Support shorthand and full names
-      ax = parseInt(data.ax !== undefined ? data.ax : data.accX);
-      ay = parseInt(data.ay !== undefined ? data.ay : data.accY);
-      az = parseInt(data.az !== undefined ? data.az : data.accZ);
+      // Support shorthand and full names, parsing as float
+      ax = parseFloat(data.ax !== undefined ? data.ax : data.accX);
+      ay = parseFloat(data.ay !== undefined ? data.ay : data.accY);
+      az = parseFloat(data.az !== undefined ? data.az : data.accZ);
 
-      gx = parseInt(data.gx !== undefined ? data.gx : data.gyroX);
-      gy = parseInt(data.gy !== undefined ? data.gy : data.gyroY);
-      gz = parseInt(data.gz !== undefined ? data.gz : data.gyroZ);
+      gx = parseFloat(data.gx !== undefined ? data.gx : data.gyroX);
+      gy = parseFloat(data.gy !== undefined ? data.gy : data.gyroY);
+      gz = parseFloat(data.gz !== undefined ? data.gz : data.gyroZ);
     } catch (e) {
       console.warn("Failed to parse JSON serial packet:", e);
       return;
@@ -310,13 +313,13 @@ function parseLine(line) {
     roll  = parseFloat(tokens[5]);
     pitch = parseFloat(tokens[6]);
 
-    ax = parseInt(tokens[7]);
-    ay = parseInt(tokens[8]);
-    az = parseInt(tokens[9]);
+    ax = parseFloat(tokens[7]);
+    ay = parseFloat(tokens[8]);
+    az = parseFloat(tokens[9]);
 
-    gx = parseInt(tokens[10]);
-    gy = parseInt(tokens[11]);
-    gz = parseInt(tokens[12]);
+    gx = parseFloat(tokens[10]);
+    gy = parseFloat(tokens[11]);
+    gz = parseFloat(tokens[12]);
   }
 
   // Validate numeric conversion
@@ -358,7 +361,7 @@ function parseLine(line) {
   }
 
   // 6. Update UI Dashboard Numeric Diagnostics
-  updateUIDashboard(currentRawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz);
+  updateUIDashboard(currentRawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz, timestamp);
 
   // 7. Update metrics
   packetCount++;
@@ -369,7 +372,7 @@ function parseLine(line) {
 /**
  * Updates DOM controls with current telemetry values.
  */
-function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz) {
+function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz, timestamp) {
   // Update raw values text
   for (let i = 0; i < 5; i++) {
     rawValElements[i].textContent = rawFingers[i];
@@ -380,13 +383,17 @@ function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, g
   valRoll.textContent = `${roll.toFixed(1)}°`;
   valPitch.textContent = `${pitch.toFixed(1)}°`;
   
-  valAccX.textContent = ax;
-  valAccY.textContent = ay;
-  valAccZ.textContent = az;
+  valAccX.textContent = ax.toFixed(3);
+  valAccY.textContent = ay.toFixed(3);
+  valAccZ.textContent = az.toFixed(3);
   
-  valGyroX.textContent = gx;
-  valGyroY.textContent = gy;
-  valGyroZ.textContent = gz;
+  valGyroX.textContent = gx.toFixed(1);
+  valGyroY.textContent = gy.toFixed(1);
+  valGyroZ.textContent = gz.toFixed(1);
+
+  if (valTimestamp && timestamp !== undefined) {
+    valTimestamp.textContent = timestamp;
+  }
 
   statPackets.textContent = packetCount;
 }
@@ -571,7 +578,7 @@ function startSimulation() {
 
   let angle = 0;
   
-  // ESP32 sends data every 50ms (20Hz)
+  // ESP32 sends data every 20ms (50Hz) matching the new firmware specification
   simulationInterval = setInterval(() => {
     angle += 0.05;
 
@@ -580,29 +587,39 @@ function startSimulation() {
     const pitch = Math.cos(angle * 0.7) * 30.0;    // ±30°
 
     // Simulate Hall sensor values oscillating around the 2000 neutral centre.
-    // Amplitude of 700 takes values from 1300 – 2700, exercising:
-    //   • neutral center (|dev| = 0)  → finger fully curled (1.0)
-    //   • ramp zone (0–500 dev)       → partial straightness
-    //   • full deflection (|dev|>=500) → finger fully straight (0.0: val ≤ 1500 or ≥ 2500)
-    // Each finger is phase-shifted to produce a cascading wave effect.
     const thumbRaw  = Math.round(2000 + Math.sin(angle)         * 700);
     const indexRaw  = Math.round(2000 + Math.sin(angle - 0.5)   * 700);
     const middleRaw = Math.round(2000 + Math.sin(angle - 1.0)   * 700);
     const ringRaw   = Math.round(2000 + Math.sin(angle - 1.5)   * 700);
     const pinkyRaw  = Math.round(2000 + Math.sin(angle - 2.0)   * 700);
 
-    // Simulated IMU readings
-    const ax = Math.round(Math.sin(angle)       * 8000);
-    const ay = Math.round(Math.cos(angle)       * 6000);
-    const az = Math.round(Math.sin(angle * 1.5) * 16000);
-    const gx = Math.round(Math.cos(angle)       * 200);
-    const gy = Math.round(Math.sin(angle)       * 300);
-    const gz = Math.round(Math.cos(angle * 1.2) * 150);
+    // Simulated IMU readings (floats in g and deg/s matching ESP32 firmware output)
+    const ax = parseFloat((Math.sin(angle)       * 0.6).toFixed(3)); // ±0.6g
+    const ay = parseFloat((Math.cos(angle)       * 0.4).toFixed(3)); // ±0.4g
+    const az = parseFloat((Math.sin(angle * 1.5) * 0.9).toFixed(3)); // ±0.9g
+    const gx = parseFloat((Math.cos(angle)       * 45.0).toFixed(1)); // ±45 deg/s
+    const gy = parseFloat((Math.sin(angle)       * 60.0).toFixed(1)); // ±60 deg/s
+    const gz = parseFloat((Math.cos(angle * 1.2) * 25.0).toFixed(1)); // ±25 deg/s
 
-    // Assemble mock CSV packet
-    const simulatedLine = `${thumbRaw},${indexRaw},${middleRaw},${ringRaw},${pinkyRaw},${roll.toFixed(2)},${pitch.toFixed(2)},${ax},${ay},${az},${gx},${gy},${gz}`;
-    parseLine(simulatedLine);
-  }, 50);
+    // Assemble mock JSON packet matching ESP32 JSON spec
+    const simulatedJSON = JSON.stringify({
+      timestamp: Math.round(performance.now()),
+      thumb: thumbRaw,
+      index: indexRaw,
+      middle: middleRaw,
+      ring: ringRaw,
+      little: pinkyRaw,
+      ax: ax,
+      ay: ay,
+      az: az,
+      gx: gx,
+      gy: gy,
+      gz: gz,
+      pitch: parseFloat(pitch.toFixed(2)),
+      roll: parseFloat(roll.toFixed(2))
+    });
+    parseLine(simulatedJSON);
+  }, 20); // 50 Hz sample rate
 
   showFeedbackNotification('Simulation started.');
 }
