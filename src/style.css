@@ -502,23 +502,12 @@ body::after {
   text-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
 }
 
-.imu-details {
+.raw-imu-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
   border-top: 1px solid var(--border-light);
   padding-top: 0.75rem;
-}
-
-.imu-details summary {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  outline: none;
-  padding: 0.25rem 0;
-  user-select: none;
-  transition: color var(--transition-fast);
-}
-
-.imu-details summary:hover {
-  color: var(--accent-purple);
 }
 
 .vector-group {

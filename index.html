@@ -151,10 +151,9 @@
             </div>
 
             <!-- Accelerometer & Gyroscope Details -->
-            <details class="imu-details">
-              <summary>Raw IMU Vector Data</summary>
+            <div class="raw-imu-container">
               <div class="vector-group">
-                <h3>Accelerometer (G's approx)</h3>
+                <h3>Accelerometer (Raw)</h3>
                 <div class="vector-row">
                   <div>X: <span id="val-acc-x">0</span></div>
                   <div>Y: <span id="val-acc-y">0</span></div>
@@ -162,14 +161,14 @@
                 </div>
               </div>
               <div class="vector-group">
-                <h3>Gyroscope (°/s approx)</h3>
+                <h3>Gyroscope (Raw)</h3>
                 <div class="vector-row">
                   <div>X: <span id="val-gyro-x">0</span></div>
                   <div>Y: <span id="val-gyro-y">0</span></div>
                   <div>Z: <span id="val-gyro-z">0</span></div>
                 </div>
               </div>
-            </details>
+            </div>
           </section>
 
           <!-- Section 3: Connection Info -->

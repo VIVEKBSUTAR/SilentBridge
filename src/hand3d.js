@@ -11,6 +11,7 @@ let scene, camera, renderer, controls;
 let wristGroup; // Root pivot of the entire hand
 let handRestGroup; // Default rest orientation (palm down, pointing away)
 let gridHelper;
+let accArrow; // Arrow helper for acceleration vector
 
 // Finger references for joint rotation
 const fingers = {
@@ -219,6 +220,13 @@ function buildHand() {
   createFinger('middle', new THREE.Vector3(-0.25, 1.5,  0.0),  1.55, 0.12, fingerColors.middle);
   createFinger('ring',   new THREE.Vector3( 0.3,  1.4,  0.0),  1.45, 0.12, fingerColors.ring);
   createFinger('pinky',  new THREE.Vector3( 0.85, 1.2,  0.0),  1.15, 0.10, fingerColors.pinky);
+
+  // Acceleration Vector Arrow (points in net direction of acceleration, colored neon green)
+  const arrowDir = new THREE.Vector3(0, 0, -1); // Points away from camera initially
+  const arrowOrigin = new THREE.Vector3(0, 0.5, 0); // Origin at the center of the palm
+  const arrowColor = 0x10b981; // Neon green (var(--accent-green))
+  accArrow = new THREE.ArrowHelper(arrowDir, arrowOrigin, 1.5, arrowColor, 0.3, 0.15);
+  handRestGroup.add(accArrow);
 }
 
 /**
@@ -391,6 +399,33 @@ export function updateHandOrientation(roll, pitch) {
   
   targetRoll = roll;
   targetPitch = pitch;
+}
+
+/**
+ * Updates the 3D acceleration arrow helper direction and length.
+ * @param {number} ax - Accel X raw
+ * @param {number} ay - Accel Y raw
+ * @param {number} az - Accel Z raw
+ */
+export function updateAcceleration(ax, ay, az) {
+  if (!accArrow) return;
+  if (isNaN(ax) || isNaN(ay) || isNaN(az)) return;
+
+  // Local mapping: X = ay (lateral), Y = ax (longitudinal), Z = az (vertical)
+  // Negating makes the vector align with physical force/gravity direction (points down at rest)
+  const dir = new THREE.Vector3(-ay, -ax, -az);
+  const magnitude = dir.length();
+
+  if (magnitude > 100) { // Avoid division by zero/noise
+    dir.normalize();
+    accArrow.setDirection(dir);
+    // 1g is approx 16384 LSB in raw values. Map to length of 1.5 units
+    const len = Math.min(3.0, Math.max(0.2, (magnitude / 16384.0) * 1.5));
+    accArrow.setLength(len, 0.2 * len, 0.08 * len);
+    accArrow.visible = true;
+  } else {
+    accArrow.visible = false;
+  }
 }
 
 /**

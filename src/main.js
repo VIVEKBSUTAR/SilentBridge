@@ -2,6 +2,7 @@ import {
   initHand, 
   updateHandOrientation, 
   updateFingerBends, 
+  updateAcceleration,
   resetCamera, 
   toggleGrid, 
   toggleStyle 
@@ -336,6 +337,7 @@ function parseLine(line) {
   // 4. Update 3D Model
   updateHandOrientation(roll, pitch);
   updateFingerBends(bends);
+  updateAcceleration(ax, ay, az);
 
   // 5. Update Oscilloscope Plotter
   if (plotter) {
