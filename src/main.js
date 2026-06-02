@@ -204,23 +204,22 @@ function loadCalibration() {
  * Converts a raw Hall sensor reading to a finger-bend factor [0.0 – 1.0].
  *
  * Coordinate system (user-defined, fixed):
- *  • Neutral centre  = 2000  (sensor at rest, no magnet displacement)
- *  • Dead zone       = ±100  → bend = 0.0  (minor noise / micro-movement ignored)
- *  • Full bend zone  = ±500+ → bend = 1.0  (raw ≤ 1500  OR  raw ≥ 2500)
- *  • Linear ramp between ±100 and ±500 deflection from 2000
+ *  • Neutral centre  = 2000  → bend = 1.0 (finger fully curled)
+ *  • Full deflection = ±500+ → bend = 0.0 (finger straight: raw ≤ 1500 OR raw ≥ 2500)
+ *  • Linear ramp between 2000 and ±500 deflection from 2000
  *
- * Direction is symmetric: the magnet can be pushed either way by bending.
+ * Direction is symmetric: the magnet can be pushed either way.
  */
 function normalizeFinger(raw) {
-  const CENTER    = 2000;  // Neutral Hall sensor value (finger straight)
-  const FULL_BEND = 500;   // Deflection at or above this → 1.0 (full curl)
+  const CENTER    = 2000;  // Neutral Hall sensor value (finger curled)
+  const FULL_BEND = 500;   // Deflection at or above this → 0.0 (finger straight)
 
   const deviation = Math.abs(raw - CENTER);
 
-  if (deviation >= FULL_BEND) return 1.0;    // Beyond full-bend threshold → curled
+  if (deviation >= FULL_BEND) return 0.0;    // Beyond full-bend threshold → straight
 
-  // Linear scaling from 0 to FULL_BEND
-  return deviation / FULL_BEND;
+  // Linear scaling: 2000 is 1.0 (curled), moving towards ±500 deflection decreases bend to 0.0 (straight)
+  return 1.0 - (deviation / FULL_BEND);
 }
 
 // ==========================================================================
@@ -571,9 +570,9 @@ function startSimulation() {
 
     // Simulate Hall sensor values oscillating around the 2000 neutral centre.
     // Amplitude of 700 takes values from 1300 – 2700, exercising:
-    //   • dead zone  (|dev| < 100)  → finger straight
-    //   • ramp zone  (100–500 dev)  → partial curl
-    //   • full bend  (|dev| >= 500) → finger fully curled (val ≤ 1500 or ≥ 2500)
+    //   • neutral center (|dev| = 0)  → finger fully curled (1.0)
+    //   • ramp zone (0–500 dev)       → partial straightness
+    //   • full deflection (|dev|>=500) → finger fully straight (0.0: val ≤ 1500 or ≥ 2500)
     // Each finger is phase-shifted to produce a cascading wave effect.
     const thumbRaw  = Math.round(2000 + Math.sin(angle)         * 700);
     const indexRaw  = Math.round(2000 + Math.sin(angle - 0.5)   * 700);
