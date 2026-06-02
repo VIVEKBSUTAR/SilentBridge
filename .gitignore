@@ -1,0 +1,26 @@
+# Python Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDEs / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Node
+node_modules/
+
+# Datasets and Artifacts
+data/raw/
+ml/data/processed/
+ml/data/plots/
+ml/data/scalers/
