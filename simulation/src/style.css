@@ -502,23 +502,12 @@ body::after {
   text-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
 }
 
-.imu-details {
+.raw-imu-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
   border-top: 1px solid var(--border-light);
   padding-top: 0.75rem;
-}
-
-.imu-details summary {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  outline: none;
-  padding: 0.25rem 0;
-  user-select: none;
-  transition: color var(--transition-fast);
-}
-
-.imu-details summary:hover {
-  color: var(--accent-purple);
 }
 
 .vector-group {
@@ -588,12 +577,58 @@ body::after {
   position: relative;
 }
 
+/* Top Viewports Row Split */
+.viewports-row {
+  display: grid;
+  grid-template-columns: 2fr 1.1fr;
+  gap: 1.25rem;
+  flex: 3;
+}
+
 /* 3D Hand Viewport */
 .viewport-3d {
-  flex: 3;
   display: flex;
   flex-direction: column;
   position: relative;
+  height: 100%;
+}
+
+/* 3D Acceleration Viewport */
+.viewport-accel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+#accel-canvas-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#accel-canvas-container:active {
+  cursor: grabbing;
+}
+
+.accel-overlay-title {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(13, 20, 35, 0.75);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: var(--shadow-main);
 }
 
 #canvas-container {
@@ -849,6 +884,65 @@ body::after {
     width: 100%;
   }
   .visualizer-container {
-    height: 600px;
+    height: auto;
   }
+  .viewports-row {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .viewport-3d, .viewport-accel {
+    height: 400px;
+  }
+}
+
+/* ==========================================================================
+   RAW TELEMETRY FLOATING HUD OVERLAY
+   ========================================================================== */
+.raw-telemetry-overlay {
+  position: fixed;
+  bottom: 45px;
+  left: 20px;
+  background: rgba(8, 12, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: var(--border-radius-md);
+  padding: 0.6rem 0.8rem;
+  z-index: 9999;
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+  box-shadow: var(--shadow-main);
+  width: 280px;
+  transition: opacity 0.3s ease;
+}
+
+.raw-telemetry-overlay .overlay-title {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-purple);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.raw-telemetry-overlay .overlay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2rem 0.8rem;
+}
+
+.raw-telemetry-overlay .overlay-grid div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.raw-telemetry-overlay .overlay-grid span {
+  color: var(--text-primary);
+  font-weight: bold;
 }

@@ -1,10 +1,13 @@
 import { 
   initHand, 
+  initAccel,
   updateHandOrientation, 
   updateFingerBends, 
+  updateAcceleration,
   resetCamera, 
   toggleGrid, 
-  toggleStyle 
+  toggleStyle,
+  resetGravityTracker
 } from './hand3d.js';
 import { RealtimePlotter } from './plotter.js';
 
@@ -73,6 +76,7 @@ const valAccZ = document.getElementById('val-acc-z');
 const valGyroX = document.getElementById('val-gyro-x');
 const valGyroY = document.getElementById('val-gyro-y');
 const valGyroZ = document.getElementById('val-gyro-z');
+const valTimestamp = document.getElementById('val-timestamp');
 
 // Telemetry Stats
 const statFps = document.getElementById('stat-fps');
@@ -91,6 +95,24 @@ let monitorLines = [];
 let lastPacketCount = 0;
 let connectionCheckInterval = null;
 
+// HUD Overlay Elements
+const overlayElements = {
+  ts: document.getElementById('overlay-ts'),
+  th: document.getElementById('overlay-th'),
+  ix: document.getElementById('overlay-ix'),
+  md: document.getElementById('overlay-md'),
+  rg: document.getElementById('overlay-rg'),
+  lt: document.getElementById('overlay-lt'),
+  ax: document.getElementById('overlay-ax'),
+  ay: document.getElementById('overlay-ay'),
+  az: document.getElementById('overlay-az'),
+  gx: document.getElementById('overlay-gx'),
+  gy: document.getElementById('overlay-gy'),
+  gz: document.getElementById('overlay-gz'),
+  pt: document.getElementById('overlay-pt'),
+  rl: document.getElementById('overlay-rl')
+};
+
 // ==========================================================================
 // APPLICATION INITIALIZATION
 // ==========================================================================
@@ -101,6 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. Start 3D Hand Scene
   initHand('canvas-container');
+
+  // Start Acceleration Scene
+  initAccel('accel-canvas-container');
 
   // 3. Initialize Oscilloscope Plotter
   const plotterCanvas = document.getElementById('plotter-canvas');
@@ -204,23 +229,22 @@ function loadCalibration() {
  * Converts a raw Hall sensor reading to a finger-bend factor [0.0 – 1.0].
  *
  * Coordinate system (user-defined, fixed):
- *  • Neutral centre  = 2000  (sensor at rest, no magnet displacement)
- *  • Dead zone       = ±100  → bend = 0.0  (minor noise / micro-movement ignored)
- *  • Full bend zone  = ±500+ → bend = 1.0  (raw ≤ 1500  OR  raw ≥ 2500)
- *  • Linear ramp between ±100 and ±500 deflection from 2000
+ *  • Neutral centre  = 2000  → bend = 1.0 (finger fully curled)
+ *  • Full deflection = ±500+ → bend = 0.0 (finger straight: raw ≤ 1500 OR raw ≥ 2500)
+ *  • Linear ramp between 2000 and ±500 deflection from 2000
  *
- * Direction is symmetric: the magnet can be pushed either way by bending.
+ * Direction is symmetric: the magnet can be pushed either way.
  */
 function normalizeFinger(raw) {
-  const CENTER    = 2000;  // Neutral Hall sensor value (finger straight)
-  const FULL_BEND = 500;   // Deflection at or above this → 1.0 (full curl)
+  const CENTER    = 2000;  // Neutral Hall sensor value (finger curled)
+  const FULL_BEND = 500;   // Deflection at or above this → 0.0 (finger straight)
 
   const deviation = Math.abs(raw - CENTER);
 
-  if (deviation >= FULL_BEND) return 1.0;    // Beyond full-bend threshold → curled
+  if (deviation >= FULL_BEND) return 0.0;    // Beyond full-bend threshold → straight
 
-  // Linear scaling from 0 to FULL_BEND
-  return deviation / FULL_BEND;
+  // Linear scaling: 2000 is 1.0 (curled), moving towards ±500 deflection decreases bend to 0.0 (straight)
+  return 1.0 - (deviation / FULL_BEND);
 }
 
 // ==========================================================================
@@ -262,6 +286,7 @@ function parseLine(line) {
   let roll, pitch;
   let ax, ay, az;
   let gx, gy, gz;
+  let timestamp;
 
   const trimmed = line.trim();
 
@@ -269,6 +294,7 @@ function parseLine(line) {
   if (trimmed.startsWith('{')) {
     try {
       const data = JSON.parse(trimmed);
+      timestamp = data.timestamp !== undefined ? parseInt(data.timestamp) : undefined;
       thumbRaw = parseInt(data.thumb);
       indexRaw = parseInt(data.index);
       middleRaw = parseInt(data.middle);
@@ -279,14 +305,14 @@ function parseLine(line) {
       roll = parseFloat(data.roll);
       pitch = parseFloat(data.pitch);
 
-      // Support shorthand and full names
-      ax = parseInt(data.ax !== undefined ? data.ax : data.accX);
-      ay = parseInt(data.ay !== undefined ? data.ay : data.accY);
-      az = parseInt(data.az !== undefined ? data.az : data.accZ);
+      // Support shorthand and full names, parsing as float
+      ax = parseFloat(data.ax !== undefined ? data.ax : data.accX);
+      ay = parseFloat(data.ay !== undefined ? data.ay : data.accY);
+      az = parseFloat(data.az !== undefined ? data.az : data.accZ);
 
-      gx = parseInt(data.gx !== undefined ? data.gx : data.gyroX);
-      gy = parseInt(data.gy !== undefined ? data.gy : data.gyroY);
-      gz = parseInt(data.gz !== undefined ? data.gz : data.gyroZ);
+      gx = parseFloat(data.gx !== undefined ? data.gx : data.gyroX);
+      gy = parseFloat(data.gy !== undefined ? data.gy : data.gyroY);
+      gz = parseFloat(data.gz !== undefined ? data.gz : data.gyroZ);
     } catch (e) {
       console.warn("Failed to parse JSON serial packet:", e);
       return;
@@ -305,13 +331,13 @@ function parseLine(line) {
     roll  = parseFloat(tokens[5]);
     pitch = parseFloat(tokens[6]);
 
-    ax = parseInt(tokens[7]);
-    ay = parseInt(tokens[8]);
-    az = parseInt(tokens[9]);
+    ax = parseFloat(tokens[7]);
+    ay = parseFloat(tokens[8]);
+    az = parseFloat(tokens[9]);
 
-    gx = parseInt(tokens[10]);
-    gy = parseInt(tokens[11]);
-    gz = parseInt(tokens[12]);
+    gx = parseFloat(tokens[10]);
+    gy = parseFloat(tokens[11]);
+    gz = parseFloat(tokens[12]);
   }
 
   // Validate numeric conversion
@@ -337,6 +363,7 @@ function parseLine(line) {
   // 4. Update 3D Model
   updateHandOrientation(roll, pitch);
   updateFingerBends(bends);
+  updateAcceleration(ax, ay, az);
 
   // 5. Update Oscilloscope Plotter
   if (plotter) {
@@ -352,7 +379,7 @@ function parseLine(line) {
   }
 
   // 6. Update UI Dashboard Numeric Diagnostics
-  updateUIDashboard(currentRawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz);
+  updateUIDashboard(currentRawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz, timestamp);
 
   // 7. Update metrics
   packetCount++;
@@ -363,7 +390,7 @@ function parseLine(line) {
 /**
  * Updates DOM controls with current telemetry values.
  */
-function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz) {
+function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, gz, timestamp) {
   // Update raw values text
   for (let i = 0; i < 5; i++) {
     rawValElements[i].textContent = rawFingers[i];
@@ -374,13 +401,33 @@ function updateUIDashboard(rawFingers, bends, roll, pitch, ax, ay, az, gx, gy, g
   valRoll.textContent = `${roll.toFixed(1)}°`;
   valPitch.textContent = `${pitch.toFixed(1)}°`;
   
-  valAccX.textContent = ax;
-  valAccY.textContent = ay;
-  valAccZ.textContent = az;
+  valAccX.textContent = ax.toFixed(3);
+  valAccY.textContent = ay.toFixed(3);
+  valAccZ.textContent = az.toFixed(3);
   
-  valGyroX.textContent = gx;
-  valGyroY.textContent = gy;
-  valGyroZ.textContent = gz;
+  valGyroX.textContent = gx.toFixed(1);
+  valGyroY.textContent = gy.toFixed(1);
+  valGyroZ.textContent = gz.toFixed(1);
+
+  if (valTimestamp && timestamp !== undefined) {
+    valTimestamp.textContent = timestamp;
+  }
+
+  // Update HUD Overlay Elements
+  if (overlayElements.ts && timestamp !== undefined) overlayElements.ts.textContent = timestamp;
+  if (overlayElements.th) overlayElements.th.textContent = rawFingers[0];
+  if (overlayElements.ix) overlayElements.ix.textContent = rawFingers[1];
+  if (overlayElements.md) overlayElements.md.textContent = rawFingers[2];
+  if (overlayElements.rg) overlayElements.rg.textContent = rawFingers[3];
+  if (overlayElements.lt) overlayElements.lt.textContent = rawFingers[4];
+  if (overlayElements.ax) overlayElements.ax.textContent = ax.toFixed(3);
+  if (overlayElements.ay) overlayElements.ay.textContent = ay.toFixed(3);
+  if (overlayElements.az) overlayElements.az.textContent = az.toFixed(3);
+  if (overlayElements.gx) overlayElements.gx.textContent = gx.toFixed(1);
+  if (overlayElements.gy) overlayElements.gy.textContent = gy.toFixed(1);
+  if (overlayElements.gz) overlayElements.gz.textContent = gz.toFixed(1);
+  if (overlayElements.pt) overlayElements.pt.textContent = pitch.toFixed(1);
+  if (overlayElements.rl) overlayElements.rl.textContent = roll.toFixed(1);
 
   statPackets.textContent = packetCount;
 }
@@ -405,6 +452,8 @@ async function connectSerial() {
 
   // Disable simulation if running
   if (isSimulating) stopSimulation();
+  
+  resetGravityTracker();
 
   try {
     // 1. Request port selection from user
@@ -558,10 +607,12 @@ function startSimulation() {
 
   isSimulating = true;
   setUISimulating(true);
+  
+  resetGravityTracker();
 
   let angle = 0;
   
-  // ESP32 sends data every 50ms (20Hz)
+  // ESP32 sends data every 20ms (50Hz) matching the new firmware specification
   simulationInterval = setInterval(() => {
     angle += 0.05;
 
@@ -570,29 +621,39 @@ function startSimulation() {
     const pitch = Math.cos(angle * 0.7) * 30.0;    // ±30°
 
     // Simulate Hall sensor values oscillating around the 2000 neutral centre.
-    // Amplitude of 700 takes values from 1300 – 2700, exercising:
-    //   • dead zone  (|dev| < 100)  → finger straight
-    //   • ramp zone  (100–500 dev)  → partial curl
-    //   • full bend  (|dev| >= 500) → finger fully curled (val ≤ 1500 or ≥ 2500)
-    // Each finger is phase-shifted to produce a cascading wave effect.
     const thumbRaw  = Math.round(2000 + Math.sin(angle)         * 700);
     const indexRaw  = Math.round(2000 + Math.sin(angle - 0.5)   * 700);
     const middleRaw = Math.round(2000 + Math.sin(angle - 1.0)   * 700);
     const ringRaw   = Math.round(2000 + Math.sin(angle - 1.5)   * 700);
     const pinkyRaw  = Math.round(2000 + Math.sin(angle - 2.0)   * 700);
 
-    // Simulated IMU readings
-    const ax = Math.round(Math.sin(angle)       * 8000);
-    const ay = Math.round(Math.cos(angle)       * 6000);
-    const az = Math.round(Math.sin(angle * 1.5) * 16000);
-    const gx = Math.round(Math.cos(angle)       * 200);
-    const gy = Math.round(Math.sin(angle)       * 300);
-    const gz = Math.round(Math.cos(angle * 1.2) * 150);
+    // Simulated IMU readings (floats in g and deg/s matching ESP32 firmware output)
+    const ax = parseFloat((Math.sin(angle)       * 0.6).toFixed(3)); // ±0.6g
+    const ay = parseFloat((Math.cos(angle)       * 0.4).toFixed(3)); // ±0.4g
+    const az = parseFloat((Math.sin(angle * 1.5) * 0.9).toFixed(3)); // ±0.9g
+    const gx = parseFloat((Math.cos(angle)       * 45.0).toFixed(1)); // ±45 deg/s
+    const gy = parseFloat((Math.sin(angle)       * 60.0).toFixed(1)); // ±60 deg/s
+    const gz = parseFloat((Math.cos(angle * 1.2) * 25.0).toFixed(1)); // ±25 deg/s
 
-    // Assemble mock CSV packet
-    const simulatedLine = `${thumbRaw},${indexRaw},${middleRaw},${ringRaw},${pinkyRaw},${roll.toFixed(2)},${pitch.toFixed(2)},${ax},${ay},${az},${gx},${gy},${gz}`;
-    parseLine(simulatedLine);
-  }, 50);
+    // Assemble mock JSON packet matching ESP32 JSON spec
+    const simulatedJSON = JSON.stringify({
+      timestamp: Math.round(performance.now()),
+      thumb: thumbRaw,
+      index: indexRaw,
+      middle: middleRaw,
+      ring: ringRaw,
+      little: pinkyRaw,
+      ax: ax,
+      ay: ay,
+      az: az,
+      gx: gx,
+      gy: gy,
+      gz: gz,
+      pitch: parseFloat(pitch.toFixed(2)),
+      roll: parseFloat(roll.toFixed(2))
+    });
+    parseLine(simulatedJSON);
+  }, 20); // 50 Hz sample rate
 
   showFeedbackNotification('Simulation started.');
 }

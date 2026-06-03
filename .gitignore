@@ -18,9 +18,3 @@ ENV/
 
 # Node
 node_modules/
-
-# Datasets and Artifacts
-data/raw/
-ml/data/processed/
-ml/data/plots/
-ml/data/scalers/

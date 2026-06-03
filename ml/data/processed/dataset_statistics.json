@@ -1,0 +1,17 @@
+{
+  "total_samples": 51,
+  "samples_per_label": {
+    "HELLO": 51
+  },
+  "avg_frames": 195.76,
+  "min_frames": 135,
+  "max_frames": 254,
+  "x_shape": [
+    51,
+    100,
+    13
+  ],
+  "y_shape": [
+    51
+  ]
+}

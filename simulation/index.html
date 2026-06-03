@@ -151,10 +151,9 @@
             </div>
 
             <!-- Accelerometer & Gyroscope Details -->
-            <details class="imu-details">
-              <summary>Raw IMU Vector Data</summary>
+            <div class="raw-imu-container">
               <div class="vector-group">
-                <h3>Accelerometer (G's approx)</h3>
+                <h3>Accelerometer (Raw)</h3>
                 <div class="vector-row">
                   <div>X: <span id="val-acc-x">0</span></div>
                   <div>Y: <span id="val-acc-y">0</span></div>
@@ -162,14 +161,14 @@
                 </div>
               </div>
               <div class="vector-group">
-                <h3>Gyroscope (°/s approx)</h3>
+                <h3>Gyroscope (Raw)</h3>
                 <div class="vector-row">
                   <div>X: <span id="val-gyro-x">0</span></div>
                   <div>Y: <span id="val-gyro-y">0</span></div>
                   <div>Z: <span id="val-gyro-z">0</span></div>
                 </div>
               </div>
-            </details>
+            </div>
           </section>
 
           <!-- Section 3: Connection Info -->
@@ -188,6 +187,10 @@
                 <span>Packets Received:</span>
                 <span id="stat-packets">0</span>
               </div>
+              <div class="stat-row">
+                <span>Timestamp:</span>
+                <span id="val-timestamp">0</span>
+              </div>
             </div>
           </section>
 
@@ -205,32 +208,47 @@
 
         <!-- Main Content (3D Hand + Graph) -->
         <div class="visualizer-container">
-          <!-- 3D Canvas Viewport -->
-          <div class="viewport-card viewport-3d">
-            <div id="canvas-container">
-              <!-- Three.js Canvas gets injected here -->
-            </div>
-            
-            <!-- Floating Controls in Viewport -->
-            <div class="viewport-overlay-controls">
-              <button id="reset-cam-btn" class="btn-overlay" title="Reset Camera Angle">
-                <span>🎥</span> Reset Cam
-              </button>
-              <button id="toggle-grid-btn" class="btn-overlay active" title="Toggle Grid Floor">
-                <span>🌐</span> Grid ON
-              </button>
-              <button id="toggle-material-btn" class="btn-overlay" title="Toggle Hand Style">
-                <span>✨</span> Style: Glass
-              </button>
+          <!-- Top Row: Viewports -->
+          <div class="viewports-row">
+            <!-- 3D Canvas Viewport -->
+            <div class="viewport-card viewport-3d">
+              <div id="canvas-container">
+                <!-- Three.js Canvas gets injected here -->
+              </div>
+              
+              <!-- Floating Controls in Viewport -->
+              <div class="viewport-overlay-controls">
+                <button id="reset-cam-btn" class="btn-overlay" title="Reset Camera Angle">
+                  <span>🎥</span> Reset Cam
+                </button>
+                <button id="toggle-grid-btn" class="btn-overlay active" title="Toggle Grid Floor">
+                  <span>🌐</span> Grid ON
+                </button>
+                <button id="toggle-material-btn" class="btn-overlay" title="Toggle Hand Style">
+                  <span>✨</span> Style: Glass
+                </button>
+              </div>
+
+              <!-- Glove Helper Legend -->
+              <div class="viewport-legend">
+                <span class="legend-item"><span class="legend-dot thumb"></span> Thumb</span>
+                <span class="legend-item"><span class="legend-dot index"></span> Index</span>
+                <span class="legend-item"><span class="legend-dot middle"></span> Middle</span>
+                <span class="legend-item"><span class="legend-dot ring"></span> Ring</span>
+                <span class="legend-item"><span class="legend-dot pinky"></span> Pinky</span>
+              </div>
             </div>
 
-            <!-- Glove Helper Legend -->
-            <div class="viewport-legend">
-              <span class="legend-item"><span class="legend-dot thumb"></span> Thumb</span>
-              <span class="legend-item"><span class="legend-dot index"></span> Index</span>
-              <span class="legend-item"><span class="legend-dot middle"></span> Middle</span>
-              <span class="legend-item"><span class="legend-dot ring"></span> Ring</span>
-              <span class="legend-item"><span class="legend-dot pinky"></span> Pinky</span>
+            <!-- 3D Acceleration Viewport -->
+            <div class="viewport-card viewport-accel">
+              <div id="accel-canvas-container">
+                <!-- Three.js Canvas for Accel Vector gets injected here -->
+              </div>
+              
+              <!-- Floating Title overlay -->
+              <div class="accel-overlay-title">
+                <span>📍</span> G-Force Vector (3D)
+              </div>
             </div>
           </div>
 
@@ -258,6 +276,30 @@
       <footer class="app-footer">
         <p>SignLanguageGlove 3D Visualizer | Powered by Web Serial API & Three.js</p>
       </footer>
+    </div>
+
+    <!-- Floating HUD Raw Telemetry (14-CH) -->
+    <div id="raw-telemetry-overlay" class="raw-telemetry-overlay">
+      <div class="overlay-title">
+        <span>🤖 RAW TELEMETRY HUD</span>
+        <span>14-CH</span>
+      </div>
+      <div class="overlay-grid">
+        <div>Timestamp: <span id="overlay-ts">-</span></div>
+        <div>Thumb: <span id="overlay-th">-</span></div>
+        <div>Index: <span id="overlay-ix">-</span></div>
+        <div>Middle: <span id="overlay-md">-</span></div>
+        <div>Ring: <span id="overlay-rg">-</span></div>
+        <div>Little: <span id="overlay-lt">-</span></div>
+        <div>Acc X: <span id="overlay-ax">-</span></div>
+        <div>Acc Y: <span id="overlay-ay">-</span></div>
+        <div>Acc Z: <span id="overlay-az">-</span></div>
+        <div>Gyro X: <span id="overlay-gx">-</span></div>
+        <div>Gyro Y: <span id="overlay-gy">-</span></div>
+        <div>Gyro Z: <span id="overlay-gz">-</span></div>
+        <div>Pitch: <span id="overlay-pt">-</span></div>
+        <div>Roll: <span id="overlay-rl">-</span></div>
+      </div>
     </div>
     
     <script type="module" src="/src/main.js"></script>

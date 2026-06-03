@@ -1,0 +1,316 @@
+{
+  "dataset_version": "v1",
+  "target_frames": 100,
+  "feature_count": 13,
+  "created_at": "2026-06-02T19:26:17.147586",
+  "normalization_method": "Hall/4095",
+  "scaler_type": "StandardScaler",
+  "recordings": [
+    {
+      "sample_id": "HELLO_0001",
+      "label": "HELLO",
+      "original_frames": 161,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0002",
+      "label": "HELLO",
+      "original_frames": 176,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0003",
+      "label": "HELLO",
+      "original_frames": 151,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0004",
+      "label": "HELLO",
+      "original_frames": 181,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0005",
+      "label": "HELLO",
+      "original_frames": 166,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0006",
+      "label": "HELLO",
+      "original_frames": 165,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0007",
+      "label": "HELLO",
+      "original_frames": 176,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0008",
+      "label": "HELLO",
+      "original_frames": 170,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0009",
+      "label": "HELLO",
+      "original_frames": 186,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0010",
+      "label": "HELLO",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0011",
+      "label": "HELLO",
+      "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0012",
+      "label": "HELLO",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0013",
+      "label": "HELLO",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0014",
+      "label": "HELLO",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0015",
+      "label": "HELLO",
+      "original_frames": 181,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0016",
+      "label": "HELLO",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0017",
+      "label": "HELLO",
+      "original_frames": 182,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0018",
+      "label": "HELLO",
+      "original_frames": 198,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0019",
+      "label": "HELLO",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0020",
+      "label": "HELLO",
+      "original_frames": 135,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0021",
+      "label": "HELLO",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0022",
+      "label": "HELLO",
+      "original_frames": 197,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0023",
+      "label": "HELLO",
+      "original_frames": 228,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0024",
+      "label": "HELLO",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0025",
+      "label": "HELLO",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0026",
+      "label": "HELLO",
+      "original_frames": 197,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0027",
+      "label": "HELLO",
+      "original_frames": 181,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0028",
+      "label": "HELLO",
+      "original_frames": 227,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0029",
+      "label": "HELLO",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0030",
+      "label": "HELLO",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0031",
+      "label": "HELLO",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0032",
+      "label": "HELLO",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0033",
+      "label": "HELLO",
+      "original_frames": 190,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0034",
+      "label": "HELLO",
+      "original_frames": 205,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0035",
+      "label": "HELLO",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0036",
+      "label": "HELLO",
+      "original_frames": 215,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0037",
+      "label": "HELLO",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0038",
+      "label": "HELLO",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0039",
+      "label": "HELLO",
+      "original_frames": 181,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0040",
+      "label": "HELLO",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0041",
+      "label": "HELLO",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0042",
+      "label": "HELLO",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0043",
+      "label": "HELLO",
+      "original_frames": 212,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0044",
+      "label": "HELLO",
+      "original_frames": 182,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0045",
+      "label": "HELLO",
+      "original_frames": 166,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0046",
+      "label": "HELLO",
+      "original_frames": 205,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0047",
+      "label": "HELLO",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0048",
+      "label": "HELLO",
+      "original_frames": 254,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0049",
+      "label": "HELLO",
+      "original_frames": 232,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0050",
+      "label": "HELLO",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELLO_0051",
+      "label": "HELLO",
+      "original_frames": 192,
+      "resampled_frames": 100
+    }
+  ]
+}
