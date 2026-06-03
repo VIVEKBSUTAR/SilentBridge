@@ -28,6 +28,9 @@ const fingers = {
   pinky:  { joints: [] }
 };
 
+let targetBends = [0, 0, 0, 0, 0];
+let currentBends = [0, 0, 0, 0, 0];
+
 // Target variables for smooth interpolation (lerping)
 let targetRoll = 0;
 let targetPitch = 0;
@@ -419,6 +422,30 @@ function createFinger(name, startPos, totalLength, radius, glowColor) {
 /**
  * Main animation rendering loop. Handles smooth interpolation.
  */
+function applyFingerBends() {
+  const fingerKeys = ['thumb', 'index', 'middle', 'ring', 'pinky'];
+  
+  fingerKeys.forEach((key, i) => {
+    const val = currentBends[i];
+    const jointRefs = fingers[key].joints;
+    if (jointRefs.length < 3) return;
+
+    if (key === 'thumb') {
+      // Thumb Opposition Movement:
+      // Rotates forward on X (MCP/IP) and slightly inward on Y (opposition)
+      jointRefs[0].rotation.x = -val * (JOINT_MAX_MCP * 0.6); // MCP
+      jointRefs[0].rotation.z = val * 0.3; // Swing inward
+      jointRefs[1].rotation.x = -val * JOINT_MAX_PIP; // IP joint
+      jointRefs[2].rotation.x = -val * (JOINT_MAX_DIP * 0.2); // DIP (minor bend)
+    } else {
+      // Standard Finger Curl (MCP, PIP, DIP curl inwards on local X axis)
+      jointRefs[0].rotation.x = -val * JOINT_MAX_MCP; // MCP bend
+      jointRefs[1].rotation.x = -val * JOINT_MAX_PIP; // PIP bend
+      jointRefs[2].rotation.x = -val * JOINT_MAX_DIP; // DIP bend
+    }
+  });
+}
+
 function animate() {
   requestAnimationFrame(animate);
 
@@ -441,13 +468,20 @@ function animate() {
     wristGroup.rotation.x = currentPitch * DEG;
   }
 
-  // 2. Render and controls update for Hand Viewport
+  // 2. Smooth interpolation (lerp) for finger bends
+  const FINGER_LERP_FACTOR = 0.12;
+  for (let i = 0; i < 5; i++) {
+    currentBends[i] += (targetBends[i] - currentBends[i]) * FINGER_LERP_FACTOR;
+  }
+  applyFingerBends();
+
+  // 3. Render and controls update for Hand Viewport
   if (controls) controls.update();
   if (renderer && scene && camera) {
     renderer.render(scene, camera);
   }
 
-  // 3. Render and controls update for Acceleration Viewport
+  // 4. Render and controls update for Acceleration Viewport
   if (controlsAccel) controlsAccel.update();
   if (rendererAccel && sceneAccel && cameraAccel) {
     rendererAccel.render(sceneAccel, cameraAccel);
@@ -600,38 +634,23 @@ export function resetGravityTracker() {
   smoothLinX = 0;
   smoothLinY = 0;
   smoothLinZ = 0;
+  // Reset finger bend baselines
+  targetBends = [0, 0, 0, 0, 0];
+  currentBends = [0, 0, 0, 0, 0];
 }
 
 /**
- * Updates individual finger joints based on normalized bending factors [0.0 - 1.0].
+ * Updates target finger bends based on normalized bending factors [0.0 - 1.0].
  * @param {number[]} bends - Array of 5 numbers representing [Thumb, Index, Middle, Ring, Pinky]
  */
 export function updateFingerBends(bends) {
   if (!Array.isArray(bends) || bends.length < 5) return;
 
-  const fingerKeys = ['thumb', 'index', 'middle', 'ring', 'pinky'];
-  
-  fingerKeys.forEach((key, i) => {
-    const val = bends[i];
-    if (isNaN(val)) return;
-
-    const jointRefs = fingers[key].joints;
-    if (jointRefs.length < 3) return;
-
-    if (key === 'thumb') {
-      // Thumb Opposition Movement:
-      // Rotates forward on X (MCP/IP) and slightly inward on Y (opposition)
-      jointRefs[0].rotation.x = -val * (JOINT_MAX_MCP * 0.6); // MCP
-      jointRefs[0].rotation.z = val * 0.3; // Swing inward
-      jointRefs[1].rotation.x = -val * JOINT_MAX_PIP; // IP joint
-      jointRefs[2].rotation.x = -val * (JOINT_MAX_DIP * 0.2); // DIP (minor bend)
-    } else {
-      // Standard Finger Curl (MCP, PIP, DIP curl inwards on local X axis)
-      jointRefs[0].rotation.x = -val * JOINT_MAX_MCP; // MCP bend
-      jointRefs[1].rotation.x = -val * JOINT_MAX_PIP; // PIP bend
-      jointRefs[2].rotation.x = -val * JOINT_MAX_DIP; // DIP bend
+  for (let i = 0; i < 5; i++) {
+    if (!isNaN(bends[i])) {
+      targetBends[i] = bends[i];
     }
-  });
+  }
 }
 
 /**
