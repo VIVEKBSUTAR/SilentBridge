@@ -14,7 +14,7 @@ from feature_extractor import FeatureExtractor
 from normalizer import Normalizer
 from resampler import Resampler
 from label_encoder import DynamicLabelEncoder
-from statistics import DatasetStatistics
+from dataset_statistics import DatasetStatistics
 
 def main():
     print("Starting Phase 2A Preprocessing Pipeline...")

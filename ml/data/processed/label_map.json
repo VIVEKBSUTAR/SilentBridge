@@ -1,3 +1,10 @@
 {
-  "HELLO": 0
+  "FOOD": 0,
+  "HELLO": 1,
+  "HELP": 2,
+  "MEDICINE": 3,
+  "NO": 4,
+  "THANK_YOU": 5,
+  "WATER": 6,
+  "YES": 7
 }

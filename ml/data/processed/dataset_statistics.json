@@ -1,17 +1,24 @@
 {
-  "total_samples": 51,
+  "total_samples": 484,
   "samples_per_label": {
-    "HELLO": 51
+    "FOOD": 58,
+    "HELLO": 51,
+    "HELP": 59,
+    "MEDICINE": 101,
+    "NO": 51,
+    "THANK_YOU": 50,
+    "WATER": 51,
+    "YES": 63
   },
-  "avg_frames": 195.76,
-  "min_frames": 135,
-  "max_frames": 254,
+  "avg_frames": 235.22,
+  "min_frames": 55,
+  "max_frames": 457,
   "x_shape": [
-    51,
+    484,
     100,
     13
   ],
   "y_shape": [
-    51
+    484
   ]
 }

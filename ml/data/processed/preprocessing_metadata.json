@@ -2,10 +2,358 @@
   "dataset_version": "v1",
   "target_frames": 100,
   "feature_count": 13,
-  "created_at": "2026-06-02T19:26:17.147586",
+  "created_at": "2026-06-03T19:00:11.528862",
   "normalization_method": "Hall/4095",
   "scaler_type": "StandardScaler",
   "recordings": [
+    {
+      "sample_id": "FOOD_0001",
+      "label": "FOOD",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0002",
+      "label": "FOOD",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0003",
+      "label": "FOOD",
+      "original_frames": 180,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0004",
+      "label": "FOOD",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0005",
+      "label": "FOOD",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0006",
+      "label": "FOOD",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0007",
+      "label": "FOOD",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0008",
+      "label": "FOOD",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0009",
+      "label": "FOOD",
+      "original_frames": 230,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0010",
+      "label": "FOOD",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0011",
+      "label": "FOOD",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0012",
+      "label": "FOOD",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0013",
+      "label": "FOOD",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0014",
+      "label": "FOOD",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0015",
+      "label": "FOOD",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0016",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0017",
+      "label": "FOOD",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0018",
+      "label": "FOOD",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0020",
+      "label": "FOOD",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0021",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0022",
+      "label": "FOOD",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0023",
+      "label": "FOOD",
+      "original_frames": 186,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0024",
+      "label": "FOOD",
+      "original_frames": 232,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0025",
+      "label": "FOOD",
+      "original_frames": 214,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0026",
+      "label": "FOOD",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0027",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0028",
+      "label": "FOOD",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0029",
+      "label": "FOOD",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0030",
+      "label": "FOOD",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0031",
+      "label": "FOOD",
+      "original_frames": 213,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0032",
+      "label": "FOOD",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0033",
+      "label": "FOOD",
+      "original_frames": 205,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0034",
+      "label": "FOOD",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0035",
+      "label": "FOOD",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0036",
+      "label": "FOOD",
+      "original_frames": 170,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0037",
+      "label": "FOOD",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0038",
+      "label": "FOOD",
+      "original_frames": 251,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0039",
+      "label": "FOOD",
+      "original_frames": 228,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0040",
+      "label": "FOOD",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0041",
+      "label": "FOOD",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0042",
+      "label": "FOOD",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0043",
+      "label": "FOOD",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0044",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0046",
+      "label": "FOOD",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0047",
+      "label": "FOOD",
+      "original_frames": 200,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0048",
+      "label": "FOOD",
+      "original_frames": 261,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0049",
+      "label": "FOOD",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0050",
+      "label": "FOOD",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0051",
+      "label": "FOOD",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0052",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0053",
+      "label": "FOOD",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0054",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0055",
+      "label": "FOOD",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0056",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0057",
+      "label": "FOOD",
+      "original_frames": 261,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0058",
+      "label": "FOOD",
+      "original_frames": 267,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0059",
+      "label": "FOOD",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "FOOD_0060",
+      "label": "FOOD",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
     {
       "sample_id": "HELLO_0001",
       "label": "HELLO",
@@ -310,6 +658,2256 @@
       "sample_id": "HELLO_0051",
       "label": "HELLO",
       "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0001",
+      "label": "HELP",
+      "original_frames": 266,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0002",
+      "label": "HELP",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0003",
+      "label": "HELP",
+      "original_frames": 257,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0004",
+      "label": "HELP",
+      "original_frames": 297,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0005",
+      "label": "HELP",
+      "original_frames": 224,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0006",
+      "label": "HELP",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0007",
+      "label": "HELP",
+      "original_frames": 291,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0008",
+      "label": "HELP",
+      "original_frames": 288,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0009",
+      "label": "HELP",
+      "original_frames": 250,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0010",
+      "label": "HELP",
+      "original_frames": 55,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0011",
+      "label": "HELP",
+      "original_frames": 237,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0012",
+      "label": "HELP",
+      "original_frames": 217,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0014",
+      "label": "HELP",
+      "original_frames": 271,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0015",
+      "label": "HELP",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0016",
+      "label": "HELP",
+      "original_frames": 136,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0017",
+      "label": "HELP",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0018",
+      "label": "HELP",
+      "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0019",
+      "label": "HELP",
+      "original_frames": 237,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0020",
+      "label": "HELP",
+      "original_frames": 263,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0021",
+      "label": "HELP",
+      "original_frames": 288,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0022",
+      "label": "HELP",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0023",
+      "label": "HELP",
+      "original_frames": 195,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0024",
+      "label": "HELP",
+      "original_frames": 252,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0025",
+      "label": "HELP",
+      "original_frames": 252,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0026",
+      "label": "HELP",
+      "original_frames": 252,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0027",
+      "label": "HELP",
+      "original_frames": 247,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0028",
+      "label": "HELP",
+      "original_frames": 253,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0029",
+      "label": "HELP",
+      "original_frames": 248,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0030",
+      "label": "HELP",
+      "original_frames": 247,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0031",
+      "label": "HELP",
+      "original_frames": 151,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0032",
+      "label": "HELP",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0033",
+      "label": "HELP",
+      "original_frames": 276,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0034",
+      "label": "HELP",
+      "original_frames": 252,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0035",
+      "label": "HELP",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0036",
+      "label": "HELP",
+      "original_frames": 278,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0037",
+      "label": "HELP",
+      "original_frames": 271,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0038",
+      "label": "HELP",
+      "original_frames": 266,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0039",
+      "label": "HELP",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0040",
+      "label": "HELP",
+      "original_frames": 228,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0041",
+      "label": "HELP",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0042",
+      "label": "HELP",
+      "original_frames": 267,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0043",
+      "label": "HELP",
+      "original_frames": 272,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0044",
+      "label": "HELP",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0045",
+      "label": "HELP",
+      "original_frames": 243,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0046",
+      "label": "HELP",
+      "original_frames": 259,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0047",
+      "label": "HELP",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0048",
+      "label": "HELP",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0049",
+      "label": "HELP",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0050",
+      "label": "HELP",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0051",
+      "label": "HELP",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0052",
+      "label": "HELP",
+      "original_frames": 248,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0053",
+      "label": "HELP",
+      "original_frames": 257,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0054",
+      "label": "HELP",
+      "original_frames": 265,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0055",
+      "label": "HELP",
+      "original_frames": 225,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0056",
+      "label": "HELP",
+      "original_frames": 258,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0057",
+      "label": "HELP",
+      "original_frames": 257,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0058",
+      "label": "HELP",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0059",
+      "label": "HELP",
+      "original_frames": 293,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "HELP_0060",
+      "label": "HELP",
+      "original_frames": 257,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0001",
+      "label": "MEDICINE",
+      "original_frames": 186,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0002",
+      "label": "MEDICINE",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0003",
+      "label": "MEDICINE",
+      "original_frames": 277,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0004",
+      "label": "MEDICINE",
+      "original_frames": 250,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0005",
+      "label": "MEDICINE",
+      "original_frames": 276,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0006",
+      "label": "MEDICINE",
+      "original_frames": 266,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0007",
+      "label": "MEDICINE",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0008",
+      "label": "MEDICINE",
+      "original_frames": 257,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0009",
+      "label": "MEDICINE",
+      "original_frames": 288,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0010",
+      "label": "MEDICINE",
+      "original_frames": 312,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0011",
+      "label": "MEDICINE",
+      "original_frames": 307,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0012",
+      "label": "MEDICINE",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0013",
+      "label": "MEDICINE",
+      "original_frames": 282,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0014",
+      "label": "MEDICINE",
+      "original_frames": 271,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0015",
+      "label": "MEDICINE",
+      "original_frames": 313,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0016",
+      "label": "MEDICINE",
+      "original_frames": 318,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0017",
+      "label": "MEDICINE",
+      "original_frames": 255,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0018",
+      "label": "MEDICINE",
+      "original_frames": 277,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0019",
+      "label": "MEDICINE",
+      "original_frames": 280,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0020",
+      "label": "MEDICINE",
+      "original_frames": 308,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0021",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0022",
+      "label": "MEDICINE",
+      "original_frames": 285,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0023",
+      "label": "MEDICINE",
+      "original_frames": 268,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0024",
+      "label": "MEDICINE",
+      "original_frames": 286,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0025",
+      "label": "MEDICINE",
+      "original_frames": 312,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0026",
+      "label": "MEDICINE",
+      "original_frames": 297,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0027",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0028",
+      "label": "MEDICINE",
+      "original_frames": 251,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0029",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0030",
+      "label": "MEDICINE",
+      "original_frames": 274,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0031",
+      "label": "MEDICINE",
+      "original_frames": 317,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0032",
+      "label": "MEDICINE",
+      "original_frames": 292,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0033",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0034",
+      "label": "MEDICINE",
+      "original_frames": 306,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0035",
+      "label": "MEDICINE",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0036",
+      "label": "MEDICINE",
+      "original_frames": 300,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0037",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0038",
+      "label": "MEDICINE",
+      "original_frames": 301,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0039",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0040",
+      "label": "MEDICINE",
+      "original_frames": 318,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0041",
+      "label": "MEDICINE",
+      "original_frames": 307,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0042",
+      "label": "MEDICINE",
+      "original_frames": 326,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0043",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0044",
+      "label": "MEDICINE",
+      "original_frames": 307,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0045",
+      "label": "MEDICINE",
+      "original_frames": 272,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0046",
+      "label": "MEDICINE",
+      "original_frames": 292,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0047",
+      "label": "MEDICINE",
+      "original_frames": 293,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0048",
+      "label": "MEDICINE",
+      "original_frames": 296,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0049",
+      "label": "MEDICINE",
+      "original_frames": 317,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0050",
+      "label": "MEDICINE",
+      "original_frames": 293,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0051",
+      "label": "MEDICINE",
+      "original_frames": 343,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0052",
+      "label": "MEDICINE",
+      "original_frames": 326,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0053",
+      "label": "MEDICINE",
+      "original_frames": 265,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0054",
+      "label": "MEDICINE",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0055",
+      "label": "MEDICINE",
+      "original_frames": 237,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0056",
+      "label": "MEDICINE",
+      "original_frames": 247,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0057",
+      "label": "MEDICINE",
+      "original_frames": 261,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0058",
+      "label": "MEDICINE",
+      "original_frames": 260,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0059",
+      "label": "MEDICINE",
+      "original_frames": 258,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0060",
+      "label": "MEDICINE",
+      "original_frames": 257,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0061",
+      "label": "MEDICINE",
+      "original_frames": 272,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0062",
+      "label": "MEDICINE",
+      "original_frames": 267,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0063",
+      "label": "MEDICINE",
+      "original_frames": 268,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0064",
+      "label": "MEDICINE",
+      "original_frames": 286,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0065",
+      "label": "MEDICINE",
+      "original_frames": 259,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0066",
+      "label": "MEDICINE",
+      "original_frames": 265,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0067",
+      "label": "MEDICINE",
+      "original_frames": 280,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0068",
+      "label": "MEDICINE",
+      "original_frames": 238,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0069",
+      "label": "MEDICINE",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0070",
+      "label": "MEDICINE",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0071",
+      "label": "MEDICINE",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0072",
+      "label": "MEDICINE",
+      "original_frames": 235,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0073",
+      "label": "MEDICINE",
+      "original_frames": 240,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0074",
+      "label": "MEDICINE",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0075",
+      "label": "MEDICINE",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0076",
+      "label": "MEDICINE",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0077",
+      "label": "MEDICINE",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0078",
+      "label": "MEDICINE",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0079",
+      "label": "MEDICINE",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0080",
+      "label": "MEDICINE",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0081",
+      "label": "MEDICINE",
+      "original_frames": 250,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0082",
+      "label": "MEDICINE",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0083",
+      "label": "MEDICINE",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0084",
+      "label": "MEDICINE",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0085",
+      "label": "MEDICINE",
+      "original_frames": 267,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0086",
+      "label": "MEDICINE",
+      "original_frames": 277,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0087",
+      "label": "MEDICINE",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0088",
+      "label": "MEDICINE",
+      "original_frames": 264,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0089",
+      "label": "MEDICINE",
+      "original_frames": 250,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0090",
+      "label": "MEDICINE",
+      "original_frames": 261,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0091",
+      "label": "MEDICINE",
+      "original_frames": 242,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0092",
+      "label": "MEDICINE",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0093",
+      "label": "MEDICINE",
+      "original_frames": 301,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0094",
+      "label": "MEDICINE",
+      "original_frames": 251,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0095",
+      "label": "MEDICINE",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0096",
+      "label": "MEDICINE",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0097",
+      "label": "MEDICINE",
+      "original_frames": 271,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0098",
+      "label": "MEDICINE",
+      "original_frames": 253,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0099",
+      "label": "MEDICINE",
+      "original_frames": 272,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0100",
+      "label": "MEDICINE",
+      "original_frames": 268,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "MEDICINE_0101",
+      "label": "MEDICINE",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0001",
+      "label": "NO",
+      "original_frames": 64,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0002",
+      "label": "NO",
+      "original_frames": 308,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0003",
+      "label": "NO",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0004",
+      "label": "NO",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0005",
+      "label": "NO",
+      "original_frames": 302,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0006",
+      "label": "NO",
+      "original_frames": 272,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0007",
+      "label": "NO",
+      "original_frames": 281,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0008",
+      "label": "NO",
+      "original_frames": 307,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0009",
+      "label": "NO",
+      "original_frames": 378,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0010",
+      "label": "NO",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0011",
+      "label": "NO",
+      "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0012",
+      "label": "NO",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0013",
+      "label": "NO",
+      "original_frames": 247,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0014",
+      "label": "NO",
+      "original_frames": 286,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0015",
+      "label": "NO",
+      "original_frames": 314,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0016",
+      "label": "NO",
+      "original_frames": 307,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0017",
+      "label": "NO",
+      "original_frames": 316,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0018",
+      "label": "NO",
+      "original_frames": 337,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0019",
+      "label": "NO",
+      "original_frames": 317,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0020",
+      "label": "NO",
+      "original_frames": 291,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0021",
+      "label": "NO",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0022",
+      "label": "NO",
+      "original_frames": 271,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0023",
+      "label": "NO",
+      "original_frames": 346,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0024",
+      "label": "NO",
+      "original_frames": 328,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0025",
+      "label": "NO",
+      "original_frames": 272,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0026",
+      "label": "NO",
+      "original_frames": 317,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0027",
+      "label": "NO",
+      "original_frames": 362,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0028",
+      "label": "NO",
+      "original_frames": 307,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0029",
+      "label": "NO",
+      "original_frames": 358,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0030",
+      "label": "NO",
+      "original_frames": 258,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0031",
+      "label": "NO",
+      "original_frames": 367,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0032",
+      "label": "NO",
+      "original_frames": 327,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0033",
+      "label": "NO",
+      "original_frames": 277,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0034",
+      "label": "NO",
+      "original_frames": 276,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0035",
+      "label": "NO",
+      "original_frames": 301,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0036",
+      "label": "NO",
+      "original_frames": 347,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0037",
+      "label": "NO",
+      "original_frames": 322,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0038",
+      "label": "NO",
+      "original_frames": 317,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0039",
+      "label": "NO",
+      "original_frames": 302,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0040",
+      "label": "NO",
+      "original_frames": 297,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0041",
+      "label": "NO",
+      "original_frames": 457,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0042",
+      "label": "NO",
+      "original_frames": 243,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0043",
+      "label": "NO",
+      "original_frames": 268,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0044",
+      "label": "NO",
+      "original_frames": 277,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0045",
+      "label": "NO",
+      "original_frames": 291,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0046",
+      "label": "NO",
+      "original_frames": 280,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0047",
+      "label": "NO",
+      "original_frames": 265,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0048",
+      "label": "NO",
+      "original_frames": 273,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0049",
+      "label": "NO",
+      "original_frames": 345,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0050",
+      "label": "NO",
+      "original_frames": 227,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "NO_0051",
+      "label": "NO",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0001",
+      "label": "THANK_YOU",
+      "original_frames": 161,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0002",
+      "label": "THANK_YOU",
+      "original_frames": 188,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0003",
+      "label": "THANK_YOU",
+      "original_frames": 212,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0004",
+      "label": "THANK_YOU",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0005",
+      "label": "THANK_YOU",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0006",
+      "label": "THANK_YOU",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0007",
+      "label": "THANK_YOU",
+      "original_frames": 156,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0008",
+      "label": "THANK_YOU",
+      "original_frames": 164,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0009",
+      "label": "THANK_YOU",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0010",
+      "label": "THANK_YOU",
+      "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0011",
+      "label": "THANK_YOU",
+      "original_frames": 176,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0012",
+      "label": "THANK_YOU",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0013",
+      "label": "THANK_YOU",
+      "original_frames": 171,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0014",
+      "label": "THANK_YOU",
+      "original_frames": 161,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0015",
+      "label": "THANK_YOU",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0016",
+      "label": "THANK_YOU",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0017",
+      "label": "THANK_YOU",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0018",
+      "label": "THANK_YOU",
+      "original_frames": 287,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0019",
+      "label": "THANK_YOU",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0020",
+      "label": "THANK_YOU",
+      "original_frames": 166,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0021",
+      "label": "THANK_YOU",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0022",
+      "label": "THANK_YOU",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0023",
+      "label": "THANK_YOU",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0024",
+      "label": "THANK_YOU",
+      "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0025",
+      "label": "THANK_YOU",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0026",
+      "label": "THANK_YOU",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0027",
+      "label": "THANK_YOU",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0028",
+      "label": "THANK_YOU",
+      "original_frames": 239,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0029",
+      "label": "THANK_YOU",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0030",
+      "label": "THANK_YOU",
+      "original_frames": 268,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0031",
+      "label": "THANK_YOU",
+      "original_frames": 162,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0032",
+      "label": "THANK_YOU",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0033",
+      "label": "THANK_YOU",
+      "original_frames": 215,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0034",
+      "label": "THANK_YOU",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0035",
+      "label": "THANK_YOU",
+      "original_frames": 187,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0036",
+      "label": "THANK_YOU",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0037",
+      "label": "THANK_YOU",
+      "original_frames": 227,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0038",
+      "label": "THANK_YOU",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0039",
+      "label": "THANK_YOU",
+      "original_frames": 160,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0040",
+      "label": "THANK_YOU",
+      "original_frames": 166,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0041",
+      "label": "THANK_YOU",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0042",
+      "label": "THANK_YOU",
+      "original_frames": 220,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0043",
+      "label": "THANK_YOU",
+      "original_frames": 205,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0044",
+      "label": "THANK_YOU",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0045",
+      "label": "THANK_YOU",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0046",
+      "label": "THANK_YOU",
+      "original_frames": 212,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0047",
+      "label": "THANK_YOU",
+      "original_frames": 165,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0048",
+      "label": "THANK_YOU",
+      "original_frames": 176,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0049",
+      "label": "THANK_YOU",
+      "original_frames": 182,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "THANK_YOU_0050",
+      "label": "THANK_YOU",
+      "original_frames": 145,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0001",
+      "label": "WATER",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0002",
+      "label": "WATER",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0003",
+      "label": "WATER",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0004",
+      "label": "WATER",
+      "original_frames": 227,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0005",
+      "label": "WATER",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0006",
+      "label": "WATER",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0007",
+      "label": "WATER",
+      "original_frames": 146,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0008",
+      "label": "WATER",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0009",
+      "label": "WATER",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0010",
+      "label": "WATER",
+      "original_frames": 205,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0011",
+      "label": "WATER",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0012",
+      "label": "WATER",
+      "original_frames": 205,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0013",
+      "label": "WATER",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0014",
+      "label": "WATER",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0015",
+      "label": "WATER",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0016",
+      "label": "WATER",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0017",
+      "label": "WATER",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0018",
+      "label": "WATER",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0019",
+      "label": "WATER",
+      "original_frames": 232,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0020",
+      "label": "WATER",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0021",
+      "label": "WATER",
+      "original_frames": 305,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0022",
+      "label": "WATER",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0023",
+      "label": "WATER",
+      "original_frames": 213,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0024",
+      "label": "WATER",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0025",
+      "label": "WATER",
+      "original_frames": 261,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0026",
+      "label": "WATER",
+      "original_frames": 197,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0027",
+      "label": "WATER",
+      "original_frames": 227,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0028",
+      "label": "WATER",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0029",
+      "label": "WATER",
+      "original_frames": 222,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0030",
+      "label": "WATER",
+      "original_frames": 243,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0031",
+      "label": "WATER",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0032",
+      "label": "WATER",
+      "original_frames": 192,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0033",
+      "label": "WATER",
+      "original_frames": 175,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0034",
+      "label": "WATER",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0035",
+      "label": "WATER",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0036",
+      "label": "WATER",
+      "original_frames": 197,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0037",
+      "label": "WATER",
+      "original_frames": 207,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0038",
+      "label": "WATER",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0039",
+      "label": "WATER",
+      "original_frames": 198,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0040",
+      "label": "WATER",
+      "original_frames": 214,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0041",
+      "label": "WATER",
+      "original_frames": 212,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0042",
+      "label": "WATER",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0043",
+      "label": "WATER",
+      "original_frames": 180,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0044",
+      "label": "WATER",
+      "original_frames": 212,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0045",
+      "label": "WATER",
+      "original_frames": 212,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0046",
+      "label": "WATER",
+      "original_frames": 338,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0047",
+      "label": "WATER",
+      "original_frames": 188,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0048",
+      "label": "WATER",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0049",
+      "label": "WATER",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0050",
+      "label": "WATER",
+      "original_frames": 201,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "WATER_0051",
+      "label": "WATER",
+      "original_frames": 180,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0001",
+      "label": "YES",
+      "original_frames": 234,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0002",
+      "label": "YES",
+      "original_frames": 241,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0003",
+      "label": "YES",
+      "original_frames": 292,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0004",
+      "label": "YES",
+      "original_frames": 247,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0005",
+      "label": "YES",
+      "original_frames": 162,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0006",
+      "label": "YES",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0007",
+      "label": "YES",
+      "original_frames": 240,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0008",
+      "label": "YES",
+      "original_frames": 266,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0009",
+      "label": "YES",
+      "original_frames": 236,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0010",
+      "label": "YES",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0011",
+      "label": "YES",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0012",
+      "label": "YES",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0013",
+      "label": "YES",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0014",
+      "label": "YES",
+      "original_frames": 261,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0015",
+      "label": "YES",
+      "original_frames": 162,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0016",
+      "label": "YES",
+      "original_frames": 165,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0017",
+      "label": "YES",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0018",
+      "label": "YES",
+      "original_frames": 244,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0019",
+      "label": "YES",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0020",
+      "label": "YES",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0021",
+      "label": "YES",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0022",
+      "label": "YES",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0023",
+      "label": "YES",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0024",
+      "label": "YES",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0025",
+      "label": "YES",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0026",
+      "label": "YES",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0027",
+      "label": "YES",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0028",
+      "label": "YES",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0029",
+      "label": "YES",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0030",
+      "label": "YES",
+      "original_frames": 137,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0031",
+      "label": "YES",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0032",
+      "label": "YES",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0033",
+      "label": "YES",
+      "original_frames": 246,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0034",
+      "label": "YES",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0035",
+      "label": "YES",
+      "original_frames": 262,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0036",
+      "label": "YES",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0037",
+      "label": "YES",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0038",
+      "label": "YES",
+      "original_frames": 221,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0039",
+      "label": "YES",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0040",
+      "label": "YES",
+      "original_frames": 200,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0041",
+      "label": "YES",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0042",
+      "label": "YES",
+      "original_frames": 210,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0043",
+      "label": "YES",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0044",
+      "label": "YES",
+      "original_frames": 166,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0045",
+      "label": "YES",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0046",
+      "label": "YES",
+      "original_frames": 230,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0047",
+      "label": "YES",
+      "original_frames": 178,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0048",
+      "label": "YES",
+      "original_frames": 181,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0049",
+      "label": "YES",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0050",
+      "label": "YES",
+      "original_frames": 220,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0051",
+      "label": "YES",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0052",
+      "label": "YES",
+      "original_frames": 256,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0053",
+      "label": "YES",
+      "original_frames": 219,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0054",
+      "label": "YES",
+      "original_frames": 191,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0055",
+      "label": "YES",
+      "original_frames": 206,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0056",
+      "label": "YES",
+      "original_frames": 276,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0057",
+      "label": "YES",
+      "original_frames": 226,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0058",
+      "label": "YES",
+      "original_frames": 211,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0059",
+      "label": "YES",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0060",
+      "label": "YES",
+      "original_frames": 196,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0061",
+      "label": "YES",
+      "original_frames": 216,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0062",
+      "label": "YES",
+      "original_frames": 231,
+      "resampled_frames": 100
+    },
+    {
+      "sample_id": "YES_0063",
+      "label": "YES",
+      "original_frames": 219,
       "resampled_frames": 100
     }
   ]

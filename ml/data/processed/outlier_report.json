@@ -1,0 +1,20 @@
+[
+  {
+    "sample_id": "FOOD_0019",
+    "label": "FOOD",
+    "frame_count": 5,
+    "recommendation": "REMOVE"
+  },
+  {
+    "sample_id": "FOOD_0045",
+    "label": "FOOD",
+    "frame_count": 5,
+    "recommendation": "REMOVE"
+  },
+  {
+    "sample_id": "HELP_0013",
+    "label": "HELP",
+    "frame_count": 46,
+    "recommendation": "REMOVE"
+  }
+]
