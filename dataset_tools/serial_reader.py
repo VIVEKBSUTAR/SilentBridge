@@ -3,7 +3,10 @@ import serial.tools.list_ports
 import json
 import time
 import random
-from config import MOCK_MODE
+try:
+    from dataset_tools.config import MOCK_MODE
+except ImportError:
+    from config import MOCK_MODE
 
 class SerialReader:
     def __init__(self, baud_rate=115200, default_port=None):

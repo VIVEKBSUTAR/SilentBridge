@@ -13,6 +13,9 @@ class DynamicLabelEncoder:
     def encode(self, label):
         return self.label_map[label]
         
+    def get_mapping(self):
+        return self.label_map
+        
     def save_mapping(self):
         if not os.path.exists(PROCESSED_DATA_DIR):
             os.makedirs(PROCESSED_DATA_DIR)

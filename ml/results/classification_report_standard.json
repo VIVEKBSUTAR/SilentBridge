@@ -1,0 +1,63 @@
+{
+  "FOOD": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 22.0
+  },
+  "HELLO": {
+    "precision": 0.9565217391304348,
+    "recall": 1.0,
+    "f1-score": 0.9777777777777777,
+    "support": 22.0
+  },
+  "HELP": {
+    "precision": 0.9583333333333334,
+    "recall": 1.0,
+    "f1-score": 0.9787234042553191,
+    "support": 23.0
+  },
+  "MEDICINE": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 23.0
+  },
+  "NO": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 23.0
+  },
+  "THANK_YOU": {
+    "precision": 1.0,
+    "recall": 0.9565217391304348,
+    "f1-score": 0.9777777777777777,
+    "support": 23.0
+  },
+  "WATER": {
+    "precision": 1.0,
+    "recall": 0.9565217391304348,
+    "f1-score": 0.9777777777777777,
+    "support": 23.0
+  },
+  "YES": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 22.0
+  },
+  "accuracy": 0.988950276243094,
+  "macro avg": {
+    "precision": 0.9893568840579711,
+    "recall": 0.9891304347826086,
+    "f1-score": 0.9890070921985816,
+    "support": 181.0
+  },
+  "weighted avg": {
+    "precision": 0.9894206902073825,
+    "recall": 0.988950276243094,
+    "f1-score": 0.9889476640152554,
+    "support": 181.0
+  }
+}
