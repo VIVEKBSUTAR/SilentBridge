@@ -96,7 +96,7 @@ def build_cnn_bilstm_attention(
     x = Dropout(dropout_rate)(x)
 
     # ── Temporal modelling ────────────────────────────────────────────────
-    x = Bidirectional(LSTM(64, return_sequences=True))(x)
+    x = Bidirectional(LSTM(64, return_sequences=True, unroll = True))(x)
     x = Dropout(dropout_rate)(x)
 
     # ── Attention ─────────────────────────────────────────────────────────
@@ -419,9 +419,11 @@ def _export_tflite(model, models_dir, tag, X_representative):
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
     converter.representative_dataset = representative_data_gen
-    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-    converter.inference_input_type  = tf.float32   # keep float I/O for simplicity
-    converter.inference_output_type = tf.float32
+    converter.target_spec.supported_ops = [
+        tf.lite.OpsSet.TFLITE_BUILTINS,
+        tf.lite.OpsSet.SELECT_TF_OPS
+    ]
+    converter._experimental_lower_tensor_list_ops = False
 
     tflite_model = converter.convert()
     tflite_path  = os.path.join(models_dir, f"silentbridge_{tag}.tflite")
@@ -445,7 +447,7 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    args = parse_args()
+    args = parse_args()  
     if args.loso:
         train_loso(args)
     else:

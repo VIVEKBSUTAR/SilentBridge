@@ -1,10 +1,15 @@
 {
-  "FOOD": 0,
-  "HELLO": 1,
-  "HELP": 2,
-  "MEDICINE": 3,
-  "NO": 4,
-  "THANK_YOU": 5,
-  "WATER": 6,
-  "YES": 7
+  "ALL": 0,
+  "FOOD": 1,
+  "HELLO": 2,
+  "HELP": 3,
+  "I": 4,
+  "MEDICINE": 5,
+  "NEED": 6,
+  "NO": 7,
+  "THANK_YOU": 8,
+  "WANT": 9,
+  "WATER": 10,
+  "YES": 11,
+  "YOU": 12
 }

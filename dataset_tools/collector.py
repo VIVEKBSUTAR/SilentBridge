@@ -21,7 +21,7 @@ import time
 import json
 import argparse
 
-from config import BAUD_RATE, DEFAULT_COM_PORT, SUPPORTED_LABELS
+from config import BAUD_RATE, DEFAULT_COM_PORT
 from serial_reader import SerialReader
 from dataset_manager import save_recording
 
@@ -91,7 +91,7 @@ def run_sensor_calibration(reader, calib_dir, user_id, calib_secs=3):
         t_end = time.time() + secs
         while time.time() < t_end:
             pkt = reader.read_json_packet()
-            if pkt:
+            if pkt and isinstance(pkt, dict):
                 for f in FINGERS:
                     if f in pkt:
                         samples[f].append(pkt[f])
@@ -135,7 +135,7 @@ def run_sensor_calibration(reader, calib_dir, user_id, calib_secs=3):
 # ── Main ─────────────────────────────────────────────────────────────────────
 def main():
     p = argparse.ArgumentParser(description="SilentBridge Dataset Collector v2")
-    p.add_argument("--user",   default=None, help="User ID (e.g. 001 or user_001)")
+    p.add_argument("--user",   default=None, help="User ID (e.g. 001 or user_001). Omit to save flat to data/raw/LABEL/")
     p.add_argument("--mock",   action="store_true", help="Run in mock mode (no hardware)")
     p.add_argument("--no-calib", action="store_true",
                    help="Skip sensor calibration step")
@@ -146,9 +146,14 @@ def main():
     raw_dir   = os.path.join(base_dir, "data", "raw")
     calib_dir = os.path.join(base_dir, "data", "calibration")
 
-    user_id = resolve_user_id(raw_dir, args.user)
+    user_id = None
     print(f"\n--- SilentBridge Dataset Collector ---")
-    print(f"User ID: {user_id}")
+    if args.user:
+        user_id = resolve_user_id(raw_dir, args.user)
+        print(f"User ID: {user_id}  →  data/raw/{user_id}/LABEL/")
+    else:
+        user_id = None
+        print(f"User ID: none  →  data/raw/LABEL/  (flat layout)")
 
     # Connect
     if args.mock:
@@ -174,13 +179,28 @@ def main():
         while True:
             print("\n" + "-"*40)
             print(f"Collecting for: {user_id}")
-            print("Supported Labels: " + ", ".join(SUPPORTED_LABELS))
+
+            # Show existing labels collected so far as a hint
+            user_raw_dir = os.path.join(raw_dir, user_id) if user_id else raw_dir
+            if os.path.exists(user_raw_dir):
+                existing_labels = sorted(os.listdir(user_raw_dir))
+                if existing_labels:
+                    counts = []
+                    for lbl in existing_labels:
+                        import glob
+                        n = len(glob.glob(os.path.join(user_raw_dir, lbl, "*.json")))
+                        counts.append(f"{lbl}({n})")
+                    print("Existing labels: " + "  ".join(counts))
 
             label = input("\nEnter Gesture Label (or 'q' to quit): ").strip().upper()
             if label == "Q":
                 break
-            if label not in SUPPORTED_LABELS:
-                print(f"'{label}' is not a supported label.")
+
+            # Sanitise — only allow letters, digits and underscores
+            import re
+            label = re.sub(r'[^A-Z0-9_]', '_', label)
+            if not label:
+                print("Empty label — try again.")
                 continue
 
             input("Press ENTER to start recording…")

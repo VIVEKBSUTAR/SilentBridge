@@ -1,0 +1,73 @@
+{
+  "label": "YOU",
+  "sample_id": "YOU_0136",
+  "user_id": "user_000",
+  "recorded_at": "2026-07-15T13:17:59.604475",
+  "frame_count": 4,
+  "frames": [
+    {
+      "timestamp": 429684,
+      "thumb": 2793,
+      "index": 2937,
+      "middle": 2928,
+      "ring": 989,
+      "little": 1047,
+      "ax": -0.662,
+      "ay": 0.258,
+      "az": 0.908,
+      "gx": 98.511,
+      "gy": -50.45,
+      "gz": 50.71,
+      "pitch": 35.06,
+      "roll": 15.88
+    },
+    {
+      "timestamp": 429704,
+      "thumb": 2652,
+      "index": 2942,
+      "middle": 2642,
+      "ring": 992,
+      "little": 1023,
+      "ax": -0.653,
+      "ay": 0.363,
+      "az": 0.886,
+      "gx": 115.038,
+      "gy": -68.626,
+      "gz": 45.908,
+      "pitch": 34.3,
+      "roll": 22.27
+    },
+    {
+      "timestamp": 429724,
+      "thumb": 2493,
+      "index": 2943,
+      "middle": 2917,
+      "ring": 999,
+      "little": 992,
+      "ax": 0.0,
+      "ay": 0.0,
+      "az": 0.0,
+      "gx": 0.0,
+      "gy": 0.0,
+      "gz": 0.0,
+      "pitch": 0.0,
+      "roll": 0.0
+    },
+    {
+      "timestamp": 429744,
+      "thumb": 2377,
+      "index": 2951,
+      "middle": 2903,
+      "ring": 1015,
+      "little": 995,
+      "ax": 0.0,
+      "ay": 0.0,
+      "az": 0.0,
+      "gx": 0.0,
+      "gy": 0.0,
+      "gz": 0.0,
+      "pitch": 0.0,
+      "roll": 0.0
+    }
+  ]
+}

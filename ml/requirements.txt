@@ -6,3 +6,5 @@ joblib
 matplotlib
 tensorflow
 seaborn
+pyttsx3
+google-genai
