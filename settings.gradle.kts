@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Gloves"
+rootProject.name = "Silentbridge"
 include(":app")
  
