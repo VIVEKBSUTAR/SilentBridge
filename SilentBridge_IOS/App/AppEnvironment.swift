@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import UIKit
 
 /// Central State Container and Real-Time Service Pipeline Orchestrator for SilentBridge.
 @MainActor
@@ -292,7 +293,53 @@ public final class AppEnvironment: ObservableObject {
         self.feedbackCount = stats.values.reduce(0) { $0 + $1.correct + $1.wrong }
     }
     
+    /// Exports all per-gesture feedback history as a JSON file and presents a share sheet.
     public func exportDataset() {
-        // Exports JSON feedback samples
+        let stats = feedbackStore.getStats()
+        var records: [[String: Any]] = []
+        for (gesture, pair) in stats {
+            records.append([
+                "gesture": gesture,
+                "correct": pair.correct,
+                "wrong": pair.wrong,
+                "total": pair.correct + pair.wrong,
+                "accuracy": pair.correct + pair.wrong > 0
+                    ? Double(pair.correct) / Double(pair.correct + pair.wrong) * 100.0
+                    : 100.0
+            ])
+        }
+        records.sort { ($0["gesture"] as? String ?? "") < ($1["gesture"] as? String ?? "") }
+
+        let payload: [String: Any] = [
+            "export_timestamp": ISO8601DateFormatter().string(from: Date()),
+            "model_version": "silentbridge_standard",
+            "total_feedbacks": feedbackCount,
+            "gesture_stats": records
+        ]
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: payload, options: .prettyPrinted) else { return }
+
+        let filename = "silentbridge_feedback_\(Int(Date().timeIntervalSince1970)).json"
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+
+        do {
+            try jsonData.write(to: tempURL)
+        } catch {
+            return
+        }
+
+        // Present share sheet
+        let activityVC = UIActivityViewController(activityItems: [tempURL], applicationActivities: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            var presenter = rootVC
+            while let presented = presenter.presentedViewController {
+                presenter = presented
+            }
+            activityVC.popoverPresentationController?.sourceView = presenter.view
+            activityVC.popoverPresentationController?.sourceRect = CGRect(
+                x: presenter.view.bounds.midX, y: presenter.view.bounds.midY, width: 0, height: 0)
+            presenter.present(activityVC, animated: true)
+        }
     }
 }
