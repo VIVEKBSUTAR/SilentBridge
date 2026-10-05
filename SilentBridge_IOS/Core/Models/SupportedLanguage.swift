@@ -57,4 +57,19 @@ public enum SupportedLanguage: String, Codable, Sendable, CaseIterable, Identifi
     public static func fromCode(_ code: String) -> SupportedLanguage {
         SupportedLanguage(rawValue: code.lowercased()) ?? .english
     }
+
+    /// Returns the `Locale.Language` identifier used by Apple's Translation framework.
+    /// Returns `nil` for English (no translation needed) or unsupported pairs.
+    public var translationLocale: Locale.Language? {
+        switch self {
+        case .english:   return nil          // source language — no translation
+        case .hindi:     return Locale.Language(identifier: "hi")
+        case .marathi:   return Locale.Language(identifier: "mr")
+        case .gujarati:  return Locale.Language(identifier: "gu")
+        case .tamil:     return Locale.Language(identifier: "ta")
+        case .telugu:    return Locale.Language(identifier: "te")
+        case .kannada:   return Locale.Language(identifier: "kn")
+        case .malayalam: return Locale.Language(identifier: "ml")
+        }
+    }
 }

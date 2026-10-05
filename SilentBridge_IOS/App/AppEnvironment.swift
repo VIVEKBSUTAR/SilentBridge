@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-/// Core State Container and Dependency Environment for SilentBridge iOS application.
+/// Central State Container and Real-Time Service Pipeline Orchestrator for SilentBridge.
 @MainActor
 public final class AppEnvironment: ObservableObject {
     
@@ -19,6 +19,7 @@ public final class AppEnvironment: ObservableObject {
     @Published public var latestSensorFrame: SensorFrame? = nil
     @Published public var gestureResult: GestureResult? = nil
     @Published public var autoAcceptedCount: Int = 0
+    @Published public var packetRate: Double = 0.0
     
     // MARK: - Buffer & Sentence State
     @Published public var wordBuffer: [String] = []
@@ -30,130 +31,181 @@ public final class AppEnvironment: ObservableObject {
     @Published public var speechRate: Float = 0.5
     @Published public var speechPitch: Float = 1.0
     
-    // MARK: - Dictionaries & Tutorials Data
-    @Published public var modelLabels: [String] = [
-        "ALL", "FOOD", "HELLO", "HELP", "I",
-        "MEDICINE", "NEED", "NO", "THANK_YOU",
-        "WANT", "WATER", "YES", "YOU"
-    ]
+    // MARK: - Data Models & Collections
+    @Published public var modelLabels: [String] = []
     @Published public var customLabels: [String] = []
     @Published public var tutorials: [TutorialItem] = []
     @Published public var discoveredDevices: [BluetoothDevice] = []
     @Published public var feedbackCount: Int = 0
     
-    private var feedbackHistory: [String: (correct: Int, wrong: Int)] = [:]
+    // MARK: - Service Engines
+    public let bluetoothManager = BluetoothManager()
+    public let gestureEngine = GestureEngine()
+    public let languageEngine = LanguageEngine()
+    public let translationManager = TranslationManager()
+    public let speechManager = SpeechManager()
+    public let feedbackStore = FeedbackStore()
+    private let labelMapper = LabelMapper()
+    
+    private var cancellables = Set<AnyCancellable>()
     
     public init() {
+        setupPipeline()
         loadInitialData()
     }
     
+    private func setupPipeline() {
+        // 1. Observe Bluetooth Connection State
+        bluetoothManager.$connectionState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self = self else { return }
+                self.connectionState = state
+                if state == .connected {
+                    self.gestureEngine.onBluetoothConnected()
+                } else if state == .disconnected {
+                    self.gestureEngine.onBluetoothDisconnected()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // 2. Observe Discovered Bluetooth Devices
+        bluetoothManager.$discoveredDevices
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] devices in
+                self?.discoveredDevices = devices
+            }
+            .store(in: &cancellables)
+        
+        // 3. Observe Telemetry Sensor Frames
+        bluetoothManager.$latestFrame
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] frame in
+                guard let self = self, let frame = frame else { return }
+                self.latestSensorFrame = frame
+                self.gestureEngine.onNewFrame(frame)
+            }
+            .store(in: &cancellables)
+        
+        bluetoothManager.$packetRate
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] rate in
+                self?.packetRate = rate
+            }
+            .store(in: &cancellables)
+        
+        // 4. Observe Gesture Engine Inference State
+        gestureEngine.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                self?.inferenceState = state
+            }
+            .store(in: &cancellables)
+        
+        // 5. Observe Gesture Engine Prediction Output
+        gestureEngine.$result
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] res in
+                guard let self = self, let res = res else {
+                    self?.gestureResult = nil
+                    return
+                }
+                let adjusted = self.feedbackStore.applyPenalty(gestureName: res.gestureName, rawConfidence: res.confidence)
+                self.gestureResult = GestureResult(
+                    gestureName: res.gestureName,
+                    confidence: res.confidence,
+                    adjustedConfidence: adjusted,
+                    topPredictions: res.topPredictions,
+                    frames: res.frames
+                )
+            }
+            .store(in: &cancellables)
+        
+        // 6. Setup Auto-Loop Gesture Decision Callback
+        gestureEngine.onAutoGestureResult = { [weak self] result in
+            guard let self = self else { return false }
+            let adjusted = self.feedbackStore.applyPenalty(gestureName: result.gestureName, rawConfidence: result.confidence)
+            if adjusted >= CaptureMode.autoConfidenceThreshold {
+                Task { @MainActor in
+                    self.addWordToBuffer(result.gestureName)
+                    self.autoAcceptedCount += 1
+                }
+                return true
+            }
+            return false
+        }
+    }
+    
     private func loadInitialData() {
+        self.modelLabels = labelMapper.allLabels
         self.tutorials = TutorialRepository.tutorials
         self.customLabels = UserDefaults.standard.stringArray(forKey: "sb_custom_labels") ?? []
         self.triggerMode = UserDefaults.standard.string(forKey: "sb_trigger_mode") ?? "manual"
-        
-        // Mock discovered glove device for Phase 1 UI preview
-        self.discoveredDevices = [
-            BluetoothDevice(name: "SilentBridge ESP32 Glove", address: "ESP32-SB-GLOVE-01", rssi: -48, isConnected: false)
-        ]
+        updateFeedbackCount()
     }
     
-    // MARK: - User Actions & Handlers
+    // MARK: - Bluetooth Actions
+    
+    public func startScanning() {
+        bluetoothManager.startScanning()
+    }
+    
+    public func refreshDevices() {
+        bluetoothManager.startScanning()
+    }
+    
+    public func connectDevice(address: String) {
+        bluetoothManager.connect(to: address)
+    }
+    
+    public func disconnectDevice() {
+        bluetoothManager.disconnect()
+    }
+    
+    // MARK: - Gesture Session & Mode Controls
     
     public func setCaptureMode(_ mode: CaptureMode) {
         self.captureMode = mode
         self.autoAcceptedCount = 0
+        gestureEngine.stopSession()
         if mode == .auto && connectionState.isConnected {
-            self.inferenceState = .recording
+            gestureEngine.startAutoLoop()
         } else if connectionState.isConnected {
-            self.inferenceState = .ready
+            gestureEngine.startSession()
         }
-    }
-    
-    public func setTargetLanguage(_ lang: SupportedLanguage) {
-        self.selectedLanguage = lang
-        if let sentence = formedSentence {
-            translateCurrentSentence(sentence)
-        }
-    }
-    
-    public func setTriggerMode(_ mode: String) {
-        self.triggerMode = mode
-        UserDefaults.standard.set(mode, forKey: "sb_trigger_mode")
-    }
-    
-    public func setSpeechRate(_ rate: Float) {
-        self.speechRate = rate
-    }
-    
-    public func setSpeechPitch(_ pitch: Float) {
-        self.speechPitch = pitch
-    }
-    
-    public func connectDevice(address: String) {
-        self.connectionState = .connecting
-        Task {
-            try? await Task.sleep(nanoseconds: 800_000_000)
-            self.connectionState = .connected
-            self.inferenceState = .ready
-            if let idx = discoveredDevices.firstIndex(where: { $0.address == address }) {
-                discoveredDevices[idx].isConnected = true
-            }
-        }
-    }
-    
-    public func disconnectDevice() {
-        self.connectionState = .disconnected
-        self.inferenceState = .disconnected
-        for i in 0..<discoveredDevices.count {
-            discoveredDevices[i].isConnected = false
-        }
-    }
-    
-    public func refreshDevices() {
-        // Will trigger CoreBluetooth scan in Phase 2
     }
     
     public func startGestureCapture() {
-        guard connectionState.isConnected else { return }
-        if captureMode == .manual {
-            self.inferenceState = .recording
-            Task {
-                try? await Task.sleep(nanoseconds: 1_200_000_000)
-                self.inferenceState = .modelInference
-                try? await Task.sleep(nanoseconds: 300_000_000)
-                let sampleResult = GestureResult(
-                    gestureName: modelLabels.randomElement() ?? "HELP",
-                    confidence: 0.92,
-                    topPredictions: [("HELP", 0.92), ("NEED", 0.05), ("WATER", 0.03)]
-                )
-                self.gestureResult = sampleResult
-                self.inferenceState = .resultFrozen
-            }
-        } else {
+        if captureMode == .auto {
             self.autoAcceptedCount = 0
-            self.inferenceState = .recording
+            gestureEngine.startAutoLoop()
+        } else {
+            gestureEngine.startSession()
         }
     }
     
     public func stopAutoCapture() {
-        self.inferenceState = .ready
+        gestureEngine.stopAutoLoop()
     }
     
     public func onFeedbackYes() {
         guard let result = gestureResult else { return }
         addWordToBuffer(result.gestureName)
-        recordFeedback(gesture: result.gestureName, isCorrect: true)
+        feedbackStore.recordFeedback(gestureName: result.gestureName, isCorrect: true)
+        updateFeedbackCount()
         self.gestureResult = nil
-        self.inferenceState = .ready
+        gestureEngine.resetEngine()
     }
     
     public func onFeedbackNo() {
         guard let result = gestureResult else { return }
-        recordFeedback(gesture: result.gestureName, isCorrect: false)
+        feedbackStore.recordFeedback(gestureName: result.gestureName, isCorrect: false)
+        updateFeedbackCount()
         self.gestureResult = nil
-        self.inferenceState = .ready
+        gestureEngine.resetEngine()
     }
+    
+    // MARK: - Word Buffer & Sentence Reconstruction
     
     public func addWordToBuffer(_ word: String) {
         wordBuffer.append(word)
@@ -172,31 +224,39 @@ public final class AppEnvironment: ObservableObject {
         guard !wordBuffer.isEmpty else { return }
         isFormingSentence = true
         Task {
-            try? await Task.sleep(nanoseconds: 600_000_000)
-            let result = reconstructSentenceFallback(tokens: wordBuffer)
-            self.formedSentence = result
+            let sentence = await languageEngine.reconstructSentence(tokens: wordBuffer)
+            self.formedSentence = sentence
             self.isFormingSentence = false
-            translateCurrentSentence(result)
+            await translateAndAutoSpeak(sentence: sentence)
         }
     }
     
-    private func translateCurrentSentence(_ text: String) {
-        if selectedLanguage == .english {
-            self.translatedSentence = text
-        } else {
-            // Simplified translation representation for UI flow
-            self.translatedSentence = "[\(selectedLanguage.displayName)] \(text)"
+    private func translateAndAutoSpeak(sentence: String) async {
+        let translated = await translationManager.translate(text: sentence, targetLanguage: selectedLanguage)
+        self.translatedSentence = translated
+        speechManager.speak(text: translated, language: selectedLanguage, rate: speechRate, pitch: speechPitch)
+    }
+    
+    public func setTargetLanguage(_ lang: SupportedLanguage) {
+        self.selectedLanguage = lang
+        if let sentence = formedSentence {
+            Task {
+                await translateAndAutoSpeak(sentence: sentence)
+            }
         }
     }
     
     public func speakCurrentSentence() {
-        // Will connect to AVSpeechSynthesizer in SpeechManager
+        guard let text = translatedSentence ?? formedSentence else { return }
+        speechManager.speak(text: text, language: selectedLanguage, rate: speechRate, pitch: speechPitch)
     }
     
     public func clearSentence() {
         self.formedSentence = nil
         self.translatedSentence = nil
     }
+    
+    // MARK: - Custom Dictionary Management
     
     public func addCustomWord(_ word: String) {
         let clean = word.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -210,44 +270,29 @@ public final class AppEnvironment: ObservableObject {
         UserDefaults.standard.set(customLabels, forKey: "sb_custom_labels")
     }
     
-    public func recordFeedback(gesture: String, isCorrect: Bool) {
-        var current = feedbackHistory[gesture] ?? (0, 0)
-        if isCorrect {
-            current.correct += 1
-        } else {
-            current.wrong += 1
-        }
-        feedbackHistory[gesture] = current
-        feedbackCount += 1
+    public func setTriggerMode(_ mode: String) {
+        self.triggerMode = mode
+        UserDefaults.standard.set(mode, forKey: "sb_trigger_mode")
     }
     
-    public func getStats() -> [String: (Int, Int)] {
-        feedbackHistory
+    public func setSpeechRate(_ rate: Float) {
+        self.speechRate = rate
+    }
+    
+    public func setSpeechPitch(_ pitch: Float) {
+        self.speechPitch = pitch
+    }
+    
+    public func getStats() -> [String: (correct: Int, wrong: Int)] {
+        feedbackStore.getStats()
+    }
+    
+    private func updateFeedbackCount() {
+        let stats = feedbackStore.getStats()
+        self.feedbackCount = stats.values.reduce(0) { $0 + $1.correct + $1.wrong }
     }
     
     public func exportDataset() {
-        // Exports logged samples
-    }
-    
-    private func reconstructSentenceFallback(tokens: [String]) -> String {
-        let upper = tokens.map { $0.uppercased() }
-        let hasHelp = upper.contains("HELP")
-        let hasWater = upper.contains("WATER")
-        let hasFood = upper.contains("FOOD")
-        let hasMedicine = upper.contains("MEDICINE")
-        let hasNeed = upper.contains("NEED") || upper.contains("WANT")
-        
-        if hasHelp {
-            return "Please help me!"
-        } else if hasNeed && hasWater {
-            return "I need water."
-        } else if hasNeed && hasFood {
-            return "I want food."
-        } else if hasNeed && hasMedicine {
-            return "I need medicine urgently."
-        } else {
-            let joined = tokens.joined(separator: " ").lowercased()
-            return joined.capitalized + "."
-        }
+        // Exports JSON feedback samples
     }
 }
